@@ -14,6 +14,7 @@ def parse_timestamp_duration(ts_str):
     if pd.isna(ts_str) or '/' not in str(ts_str):
         return 0.0
     parts = str(ts_str).strip().split('/')
+    parts = str(ts_str).strip().split('/')
     def to_seconds(t_val):
         m, s = map(float, t_val.strip().split(':'))
         return m * 60 + s
@@ -131,6 +132,8 @@ def analyze_and_plot(df, title_suffix=''):
     weights = [max(1.0, G[u][v]['weight'] * 3.5) for u, v in edges]
     nx.draw_networkx_edges(G, pos, edgelist=edges, width=weights, edge_color='#64748b', arrowsize=16, connectionstyle='arc3,rad=0.15')
 
+    edge_labels = {(u, v): f"{d['weight']:.2f}\n(n={d['count']})" for u, v, d in G.edges(data=True)}
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=7, label_pos=0.3)
     edge_labels = {(u, v): f"{d['weight']:.2f}\n(n={d['count']})" for u, v, d in G.edges(data=True)}
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=7, label_pos=0.3)
 
