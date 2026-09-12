@@ -1,139 +1,195 @@
-import io
-import re
-import matplotlib.pyplot as plt
-import networkx as nx
-import numpy as np
+import sys
+import os
+import argparse
 import pandas as pd
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
 
+print('>>> [1/4] markov.py loaded successfully.')
+
+SPLIT_STATES = {'CG', 'OG', 'FM', 'BM', 'HG', 'SC'}
 
 def parse_timestamp_duration(ts_str):
-    """Calculates duration in seconds from countdown/countup timestamp pair (e.g.
-
-    '4:00/3:48').
-    """
-    if pd.isna(ts_str) or "/" not in str(ts_str):
+    if pd.isna(ts_str) or '/' not in str(ts_str):
+        return 0.0
+    parts = str(ts_str).strip().split('/')
+    def to_seconds(t_val):
+        m, s = map(float, t_val.strip().split(':'))
+        return m * 60 + s
+    try:
+        return abs(to_seconds(parts[0]) - to_seconds(parts[1]))
+    except Exception:
         return 0.0
 
-    parts = str(ts_str).strip().split("/")
+def resolve_perspective_state(state_name, athlete_id, dom_athlete):
+    raw_state = str(state_name).strip()
+    if raw_state not in SPLIT_STATES:
+        return raw_state
+    dom_norm = str(dom_athlete).strip().lower()
+    ath_norm = str(athlete_id).strip().lower()
+    if dom_norm in ['none', 'neutral', 'n', 'nan', '']:
+        return raw_state
+    return f'{raw_state}_T' if ath_norm == dom_norm else f'{raw_state}_B'
 
-    def to_seconds(t_val):
-        t_val = t_val.strip()
-        m, s = map(float, t_val.split(":"))
-        return m * 60 + s
+def expand_dual_athlete_transitions(df):
+    processed = []
+    has_win = 'Win' in df.columns
+    for _, row in df.iterrows():
+        src_raw = str(row.get('Primary State', '')).strip()
+        tgt_raw = str(row.get('Next State', '')).strip()
+        dom = str(row.get('Dominant Athlete', 'None')).strip()
 
-    t1 = to_seconds(parts[0])
-    t2 = to_seconds(parts[1])
-    return abs(t1 - t2)
+        name_a = row.get('Name A', 'Athlete A')
+        name_b = row.get('Name B', 'Athlete B')
 
+        src_a = resolve_perspective_state(src_raw, 'A', dom)
+        tgt_a = resolve_perspective_state(tgt_raw, 'A', dom)
+        src_b = resolve_perspective_state(src_raw, 'B', dom)
+        tgt_b = resolve_perspective_state(tgt_raw, 'B', dom)
 
-def parse_adv_pen(adv_str):
-    """Parses compound adv/pen tokens (e.g., '1/-1', '/-1', '2/0') into (A, B)
+        base = row.to_dict()
+        win_val = str(row.get('Win', '')).strip().lower()
 
-    integers.
-    """
-    if pd.isna(adv_str) or "/" not in str(adv_str):
-        return (0, 0)
-    parts = str(adv_str).strip().split("/")
-    a = int(parts[0]) if parts[0] != "" else 0
-    b = int(parts[1]) if parts[1] != "" else 0
-    return (a, b)
+        rec_a = base.copy()
+        rec_a.update({
+            'Focal_Athlete': name_a,
+            'Athlete_Role': 'A',
+            'Source_Resolved': src_a,
+            'Target_Resolved': tgt_a,
+            'Is_Winner': (win_val in ['a', str(name_a).lower()]) if has_win else True
+        })
+        processed.append(rec_a)
 
+        rec_b = base.copy()
+        rec_b.update({
+            'Focal_Athlete': name_b,
+            'Athlete_Role': 'B',
+            'Source_Resolved': src_b,
+            'Target_Resolved': tgt_b,
+            'Is_Winner': (win_val in ['b', str(name_b).lower()]) if has_win else True
+        })
+        processed.append(rec_b)
 
-def format_state(row, state_col="Primary State"):
-    """Constructs a consistent node label including dominance perspective."""
-    base = str(row[state_col]).strip()
-    dom = (
-        str(row["Dominant Athlete"]).strip()
-        if "Dominant Athlete" in row
-        else "None"
-    )
+    return pd.DataFrame(processed)
 
-    if dom and dom.lower() not in ["none", "neutral", "nan", ""]:
-        return f"{base} ({dom})"
-    return base
+def filter_dataset(df, args):
+    filtered = df.copy()
+    if args.match_id is not None:
+        m_col = next((c for c in ['Match ID', 'MatchID', 'Match_ID', 'Match'] if c in filtered.columns), None)
+        if m_col:
+            filtered = filtered[filtered[m_col].astype(str) == str(args.match_id)]
+    if args.name:
+        name_cols = [c for c in ['Name A', 'Name B', 'Focal_Athlete'] if c in filtered.columns]
+        if name_cols:
+            mask = False
+            for c in name_cols:
+                mask = mask | (filtered[c].astype(str).str.lower() == args.name.lower())
+            filtered = filtered[mask]
+    if args.belt and 'Belt' in filtered.columns:
+        filtered = filtered[filtered['Belt'].astype(str).str.lower() == args.belt.lower()]
+    if args.age is not None and 'Age' in filtered.columns:
+        filtered = filtered[filtered['Age'].astype(str) == str(args.age)]
+    if args.weight:
+        w_col = next((c for c in ['Weight Class', 'Weight', 'WeightClass'] if c in filtered.columns), None)
+        if w_col:
+            filtered = filtered[filtered[w_col].astype(str).str.lower() == args.weight.lower()]
+    if args.win_only:
+        filtered = filtered[filtered['Is_Winner'] == True]
+    return filtered
 
+def analyze_and_plot(df, title_suffix=''):
+    counts = pd.crosstab(df['Source_Resolved'], df['Target_Resolved'], dropna=False)
+    all_states = sorted(list(set(df['Source_Resolved']).union(set(df['Target_Resolved']))))
+    counts = counts.reindex(index=all_states, columns=all_states, fill_value=0)
+    probs = counts.div(counts.sum(axis=1), axis=0).fillna(0.0)
 
-def analyze_bjj_data(df):
-    # 1. Parse timestamps, dwell times, and adv/pen
-    df["Duration_Sec"] = df["Timestamp In / Out"].apply(
-        parse_timestamp_duration
-    )
-    df["Adv_Pen_Tuple"] = df["Adv/Pen"].apply(parse_adv_pen)
-    df["Adv_Pen_A"] = df["Adv_Pen_Tuple"].apply(lambda x: x[0])
-    df["Adv_Pen_B"] = df["Adv_Pen_Tuple"].apply(lambda x: x[1])
-
-    # 2. Normalize Current State and Next State labels
-    df["Source_State"] = df.apply(
-        lambda r: format_state(r, "Primary State"), axis=1
-    )
-    df["Target_State"] = df["Next State"].astype(str).str.strip()
-
-    # 3. Compute Transition Count and Probability Matrix
-    transition_counts = pd.crosstab(
-        df["Source_State"], df["Target_State"], dropna=False
-    )
-    all_states = sorted(
-        list(set(df["Source_State"]).union(set(df["Target_State"])))
-    )
-
-    # Reindex to ensure square matrix covering all observed states
-    transition_counts = transition_counts.reindex(
-        index=all_states, columns=all_states, fill_value=0
-    )
-    transition_probs = transition_counts.div(
-        transition_counts.sum(axis=1), axis=0
-    ).fillna(0.0)
-
-    # 4. Generate Graph Visualization
     G = nx.DiGraph()
+    for s in all_states:
+        G.add_node(s)
+    for src in probs.index:
+        for tgt in probs.columns:
+            c = counts.loc[src, tgt]
+            if c > 0:
+                G.add_edge(src, tgt, weight=probs.loc[src, tgt], count=c)
 
-    for state in all_states:
-        G.add_node(state)
+    plt.figure(figsize=(13, 8))
+    pos = nx.spring_layout(G, seed=42, k=1.8)
 
-    for src in transition_probs.index:
-        for tgt in transition_probs.columns:
-            prob = transition_probs.loc[src, tgt]
-            count = transition_counts.loc[src, tgt]
-            if count > 0:
-                G.add_edge(src, tgt, weight=prob, count=count)
+    node_colors = []
+    for node in G.nodes():
+        if '_T' in node:
+            node_colors.append('#a3e635')
+        elif '_B' in node:
+            node_colors.append('#f87171')
+        else:
+            node_colors.append('#93c5fd')
 
-    plt.figure(figsize=(12, 8))
-    pos = nx.spring_layout(G, seed=42, k=1.5)
-
-    # Draw nodes and structural layout
-    nx.draw_networkx_nodes(
-        G, pos, node_size=2800, node_color="#d6e8fa", edgecolors="#2b5c8f"
-    )
-    nx.draw_networkx_labels(
-        G, pos, font_size=9, font_weight="bold", font_family="sans-serif"
-    )
-
-    # Draw directed edges
+    nx.draw_networkx_nodes(G, pos, node_size=2600, node_color=node_colors, edgecolors='#334155', linewidths=1.5)
+    nx.draw_networkx_labels(G, pos, font_size=8, font_weight='bold')
     edges = G.edges()
-    weights = [G[u][v]["weight"] * 3.5 for u, v in edges]
-    nx.draw_networkx_edges(
-        G,
-        pos,
-        edgelist=edges,
-        width=weights,
-        edge_color="#4a5568",
-        arrowsize=18,
-        connectionstyle="arc3,rad=0.1",
-    )
+    weights = [max(1.0, G[u][v]['weight'] * 3.5) for u, v in edges]
+    nx.draw_networkx_edges(G, pos, edgelist=edges, width=weights, edge_color='#64748b', arrowsize=16, connectionstyle='arc3,rad=0.15')
 
-    # Edge labels showing transition probabilities
-    edge_labels = {
-        (u, v): f"{d['weight']:.2f}\n(n={d['count']})"
-        for u, v, d in G.edges(data=True)
-    }
-    nx.draw_networkx_edge_labels(
-        G, pos, edge_labels=edge_labels, font_size=7, label_pos=0.3
-    )
+    edge_labels = {(u, v): f"{d['weight']:.2f}\n(n={d['count']})" for u, v, d in G.edges(data=True)}
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=7, label_pos=0.3)
 
-    plt.title("BJJ State Transition Graph", fontsize=14, fontweight="bold")
-    plt.axis("off")
+    plt.title(f'BJJ State Transitions {title_suffix}', fontsize=13, fontweight='bold')
+    plt.axis('off')
     plt.tight_layout()
-    plt.show()
 
-    return transition_probs, df
+    out_png = 'bjj_transitions.png'
+    plt.savefig(out_png, dpi=300)
+    print(f'>>> [4/4] Plot saved to: {out_png}')
 
+    try:
+        plt.show()
+    except Exception as e:
+        print(f'>>> [Note] Skipped GUI window: {e}')
+
+    return probs
+
+def main():
+    print('>>> [2/4] Initializing arguments...')
+    parser = argparse.ArgumentParser(description='Process BJJ Markov Chain transitions.')
+    parser.add_argument('csv_path', nargs='?', default='markov_sample.csv', help='Path to input CSV file')
+    parser.add_argument('--match-id', '-m', type=str, default=None)
+    parser.add_argument('--name', type=str, default=None)
+    parser.add_argument('--belt', type=str, default=None)
+    parser.add_argument('--age', type=int, default=None)
+    parser.add_argument('--weight', type=str, default=None)
+    parser.add_argument('--win-only', action='store_true')
+
+    args = parser.parse_args()
+
+    if not os.path.exists(args.csv_path):
+        print(f'Error: File {args.csv_path} was not found.')
+        return
+
+    print(f'>>> [3/4] Reading dataset: {args.csv_path}')
+    df = pd.read_csv(args.csv_path)
+    df.columns = df.columns.str.strip().str.replace(r'\s*/\s*', '/', regex=True)
+
+    dual_df = expand_dual_athlete_transitions(df)
+    filtered = filter_dataset(dual_df, args)
+
+    if filtered.empty:
+        print('Error: No transition data matched the specified filter criteria.')
+        return
+
+    filter_info = []
+    if args.match_id: filter_info.append(f'Match={args.match_id}')
+    if args.name: filter_info.append(f'Name={args.name}')
+    if args.belt: filter_info.append(f'Belt={args.belt}')
+    if args.age: filter_info.append(f'Age={args.age}')
+    if args.weight: filter_info.append(f'Weight={args.weight}')
+    if args.win_only: filter_info.append('Winners Only')
+    title_suffix = f"({', '.join(filter_info)})" if filter_info else '(All Data)'
+
+    probs = analyze_and_plot(filtered, title_suffix=title_suffix)
+
+    print('\n--- Transition Probability Matrix ---')
+    print(probs.round(2))
+
+if __name__ == '__main__':
+    main()
