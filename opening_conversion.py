@@ -1,35 +1,31 @@
 """
 opening_conversion.py
 =====================
-Empirical Opening Transition Win Rate Calculator for BJJ Match Analytics.
+Empirical Win Rate Calculator Conditioned on First Split State Established.
 
 Description:
 ------------
-This script quantifies first-mover advantage across tournament matches.
-It isolates each competitor's very first transition out of the neutral standing
-state (`St` -> non-`St`) and calculates the empirical win probability conditioned
-on the resulting destination position or split state (_T / _B).
+Quantifies first-mover advantage by tracking each competitor's trajectory
+until the first asymmetric split state (_T or _B) is consolidated.
+Symmetric states (St, Fty) and terminal nodes (End) are skipped until
+positional control is secured.
 
 Analytical Formulation:
 -----------------------
-    P(Win | First Exchange -> S) = N_wins(S) / N_entries(S)
+    P(Win | First Split State -> S) = N_wins(S) / N_entries(S)
 
 Where:
-    - S: The target state reached after leaving the opening standing exchange.
-    - N_entries(S): Total athlete entries into state S on the first exchange.
+    - S: The first consolidated split state (ending in _T or _B).
+    - N_entries(S): Total entries into state S across evaluated matches.
     - N_wins(S): Entries where the athlete won the match.
 
 Usage:
 ------
     python opening_conversion.py [csv_path]
 
-Examples:
----------
-    1. Run on default sample file:
-       python opening_conversion.py
-
-    2. Run on a specific tournament file:
-       python opening_conversion.py markov_sample.csv
+Example:
+--------
+    python opening_conversion.py markov_sample.csv
 """
 
 import sys
@@ -37,17 +33,14 @@ import pandas as pd
 from bjj_core import expand_dual_athlete_transitions
 
 
-def calculate_opening_win_rates(csv_path: str) -> None:
-    """
-    Parses tournament match logs, isolates the first non-standing transition
-    for each athlete perspective, and computes historical win probabilities.
-    """
+def calculate_first_split_state_win_rates(csv_path: str) -> None:
     try:
         df = pd.read_csv(csv_path)
     except FileNotFoundError:
         print(f"Error: Dataset file '{csv_path}' was not found.")
         return
 
+    # Normalize column headers
     df.columns = df.columns.str.strip().str.replace(r"\s*/\s*", "/", regex=True)
 
     match_col = next(
@@ -56,39 +49,38 @@ def calculate_opening_win_rates(csv_path: str) -> None:
     )
 
     if not match_col:
-        print("Error: No 'Match ID' column found. Ensure matches are separated by an ID.")
+        print("Error: No 'Match ID' column found in the dataset.")
         return
 
-    # Expand records into dual perspectives (_T / _B)
-    dual_df = expand_dual_athlete_transitions(df)
+    # Expand records into dual perspectives (Athlete A and B) with split mode active
+    dual_df = expand_dual_athlete_transitions(df, split_mode=True)
 
-    # Isolate transitions leaving the initial standing exchange (St -> non-St)
-    opening_transitions = dual_df[
-        (dual_df["Source_Resolved"] == "St") & 
-        (dual_df["Target_Resolved"] != "St")
+    # Filter strictly for resolved split states (_T or _B)
+    split_transitions = dual_df[
+        dual_df["Target_Resolved"].str.endswith(("_T", "_B"))
     ]
 
-    if opening_transitions.empty:
-        print("Error: No transitions leaving 'St' were found in the dataset.")
+    if split_transitions.empty:
+        print("Error: No split states (_T or _B) were established in this dataset.")
         return
 
-    # Select the first opening transition per athlete trajectory per match
-    first_exchanges = (
-        opening_transitions.groupby([match_col, "Athlete_Role"])
+    # Isolate the very first split state for each athlete perspective per match
+    first_split_states = (
+        split_transitions.groupby([match_col, "Athlete_Role"])
         .first()
         .reset_index()
     )
 
-    # Aggregate total entries, wins, losses, and conversion probabilities
+    # Aggregate counts and empirical conversion rates
     summary = []
-    for state, group in first_exchanges.groupby("Target_Resolved"):
+    for state, group in first_split_states.groupby("Target_Resolved"):
         total_occurrences = len(group)
         wins = int(group["Is_Winner"].sum())
         losses = total_occurrences - wins
         win_prob = round(wins / total_occurrences, 2) if total_occurrences > 0 else 0.0
 
         summary.append({
-            "First Exchange State": state,
+            "First Split State": state,
             "Total Entries (n)": total_occurrences,
             "Wins": wins,
             "Losses": losses,
@@ -96,12 +88,12 @@ def calculate_opening_win_rates(csv_path: str) -> None:
         })
 
     summary_df = pd.DataFrame(summary).sort_values(
-        by=["Win Probability", "Total Entries (n)"], 
-        ascending=[False, False]
+        by=["Win Probability", "Total Entries (n)"],
+        ascending=[False, False],
     )
 
     print("\n" + "=" * 65)
-    print("WIN PROBABILITY BY STATE AFTER FIRST STANDING EXCHANGE")
+    print("WIN PROBABILITY BY FIRST ASYMMETRIC CONSOLIDATED STATE (_T / _B)")
     print("=" * 65)
     print(summary_df.to_string(index=False))
     print("=" * 65)
@@ -109,4 +101,4 @@ def calculate_opening_win_rates(csv_path: str) -> None:
 
 if __name__ == "__main__":
     target_csv = sys.argv[1] if len(sys.argv) > 1 else "markov_sample.csv"
-    calculate_opening_win_rates(target_csv)
+    calculate_first_split_state_win_rates(target_csv)
