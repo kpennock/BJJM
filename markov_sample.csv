@@ -1,17 +1,17 @@
-Timestamp In / Out,Primary State,Dominant Athlete,Substate,Exit Action,Subaction,Action Instigator,Points,Adv/Pen, Next State,Match ID,Name A,Name B,Belt,Age,Weight Class,Win
-4:00/3:57,St,N,,DGP,,N,,,Fty,1,Eymen Agah Saygili,Tomás Santos Esteves,Grey,11,Light,A
-3:57/3:53,Fty,N,,Reset,,N,,-1/-1,St,1,Eymen Agah Saygili,Tomás Santos Esteves,Grey,11,Light,A
-3:53/3:50,St,N,,DGP,,N,,,Fty,1,Eymen Agah Saygili,Tomás Santos Esteves,Grey,11,Light,A
-3:50/3:38,Fty,N,,Reset,,N,,-1/1,St,1,Eymen Agah Saygili,Tomás Santos Esteves,Grey,11,Light,A
-3:38/3:27,St,N,,DGP,,N,,-1/1,Fty,1,Eymen Agah Saygili,Tomás Santos Esteves,Grey,11,Light,A
-3:27/3:03,Fty,N,,Reset,,N,,-1/-1,St,1,Eymen Agah Saygili,Tomás Santos Esteves,Grey,11,Light,A
-3:03/3:02,St,N,,DGP,,N,,,CG,1,Eymen Agah Saygili,Tomás Santos Esteves,Grey,11,Light,A
-3:02/2:23,CG,A,,BT,,A,4,,BM,1,Eymen Agah Saygili,Tomás Santos Esteves,Grey,11,Light,A
-2:23/0:00,BM,A,,Time,,N,,,End,1,Eymen Agah Saygili,Tomás Santos Esteves,Grey,11,Light,A
-4:00/3:55,St,N,,DGPull,,N,,,Fty,2,Eymen Agah Saygili,Nelson James Cox,Grey,11,Light,A
-3:55/3:23,Fty,N,,Sc,,A,,,HG,2,Eymen Agah Saygili,Nelson James Cox,Grey,11,Light,A
-3:23/2:36,HG,A,,GPass,,A,3,,SC,2,Eymen Agah Saygili,Nelson James Cox,Grey,11,Light,A
-2:26/2:02,SC,A,,S-Failed,AB-Failed,B,,,OG,2,Eymen Agah Saygili,Nelson James Cox,Grey,11,Light,A
-2:02/1:50,OG,B,,Sw,,A,3,,FM,2,Eymen Agah Saygili,Nelson James Cox,Grey,11,Light,A
-1:50/0:55,FM,A,,BT,,A,4,,BM,2,Eymen Agah Saygili,Nelson James Cox,Grey,11,Light,A
-0:55/0:46,BM,A,,Sub,BowA,A,,,End,2,Eymen Agah Saygili,Nelson James Cox,Grey,11,Light,A
+Timestamp In / Out,Primary State,Dominant Athlete,Substate,Exit Action,Subaction,Action Instigator,Points,Adv/Pen, Next State,Match ID,Name A,Group A,Name B,Group B,Belt,Age,Weight Class,Win
+4:00/3:57,St,N,,DGP,,N,,,Fty,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
+3:57/3:53,Fty,N,,Reset,,N,,-1/-1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
+3:53/3:50,St,N,,DGP,,N,,,Fty,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
+3:50/3:38,Fty,N,,Reset,,N,,-1/1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
+3:38/3:27,St,N,,DGP,,N,,-1/1,Fty,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
+3:27/3:03,Fty,N,,Reset,,N,,-1/-1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
+3:03/3:02,St,N,,DGP,,N,,,CG,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
+3:02/2:23,CG,A,,BT,,A,4,,BM,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
+2:23/0:00,BM,A,,Time,,N,,,End,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
+4:00/3:55,St,N,,DGPull,,N,,,Fty,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+3:55/3:23,Fty,N,,Sc,,A,,,HG,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+3:23/2:36,HG,A,,GPass,,A,3,,SC,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+2:26/2:02,SC,A,,S-Failed,AB-Failed,B,,,OG,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+2:02/1:50,OG,B,,Sw,,A,3,,FM,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+1:50/0:55,FM,A,,BT,,A,4,,BM,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+0:55/0:46,BM,A,,Sub,BowA,A,,,End,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A

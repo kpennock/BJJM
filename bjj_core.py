@@ -49,7 +49,7 @@ def resolve_perspective_state(state_name, athlete_id, dom_athlete, split_mode=Fa
     return f"{raw_state}_T" if ath_norm == dom_norm else f"{raw_state}_B"
 
 def parse_onesided_pairs(pairs_str):
-    """Parses string '1/A,2/A,3/B' into a lookup dict: {'1': 'A', '2': 'A', '3': 'B'}."""
+    """Parses string '1/A,2/A,3/B' into a lookup dict."""
     if not pairs_str:
         return {}
     mapping = {}
@@ -63,7 +63,7 @@ def parse_onesided_pairs(pairs_str):
 def expand_dual_athlete_transitions(df, split_mode=False, onesided_map=None):
     """
     Expands transitions into athlete-specific trajectories with lookahead
-    dominance resolution and point/submission metrics.
+    dominance resolution, group assignment, and point/submission metrics.
     """
     processed = []
     df = df.reset_index(drop=True)
@@ -71,6 +71,11 @@ def expand_dual_athlete_transitions(df, split_mode=False, onesided_map=None):
     is_onesided = bool(onesided_map)
 
     match_col = next((c for c in ['Match ID', 'MatchID', 'Match_ID', 'Match'] if c in df.columns), None)
+
+    # Detect team/group columns
+    grp_a_col = next((c for c in ['Group A', 'Group_A', 'Team A', 'Team_A'] if c in df.columns), None)
+    grp_b_col = next((c for c in ['Group B', 'Group_B', 'Team B', 'Team_B'] if c in df.columns), None)
+    grp_fallback = next((c for c in ['Group', 'Team', 'Cohort'] if c in df.columns), None)
 
     for i in range(len(df)):
         row = df.iloc[i]
@@ -90,7 +95,6 @@ def expand_dual_athlete_transitions(df, split_mode=False, onesided_map=None):
 
         action = str(row.get('Exit Action', '')).strip().lower()
         instigator = str(row.get('Action Instigator', '')).strip().upper()
-        subaction = str(row.get('Subaction', '')).strip()
 
         pts_val = row.get('Points', 0)
         try:
@@ -98,7 +102,7 @@ def expand_dual_athlete_transitions(df, split_mode=False, onesided_map=None):
         except Exception:
             points = 0
 
-        # Lookahead within same match to determine consolidated target dominance
+        # Lookahead within same match for target dominance
         if i + 1 < len(df):
             next_row = df.iloc[i + 1]
             next_m_id = str(next_row.get(match_col, '')).strip() if match_col else ""
@@ -109,13 +113,16 @@ def expand_dual_athlete_transitions(df, split_mode=False, onesided_map=None):
                 if next_dom.lower() not in ['none', 'neutral', 'n', 'nan', '']:
                     tgt_dom = next_dom
 
-        # Action fallback for sweeps/passes
         if tgt_dom == src_dom and action in ['sw', 'sweep', 'gpass', 'pass', 'sc']:
             if instigator in ['A', 'B']:
                 tgt_dom = instigator
 
         name_a = row.get('Name A', 'Athlete A')
         name_b = row.get('Name B', 'Athlete B')
+
+        group_a = str(row.get(grp_a_col, row.get(grp_fallback, ''))).strip() if (grp_a_col or grp_fallback) else ''
+        group_b = str(row.get(grp_b_col, row.get(grp_fallback, ''))).strip() if (grp_b_col or grp_fallback) else ''
+
         base = row.to_dict()
         win_val = str(row.get('Win', '')).strip().lower()
 
@@ -129,6 +136,7 @@ def expand_dual_athlete_transitions(df, split_mode=False, onesided_map=None):
                 'Athlete_Role': 'A',
                 'Source_Resolved': src_a,
                 'Target_Resolved': tgt_a,
+                'Athlete_Group': group_a,
                 'Scored_Points': points if instigator == 'A' else 0,
                 'Executed_Sub': (action in ['sub', 'submission'] and instigator == 'A'),
                 'Is_Winner': (win_val in ['a', str(name_a).lower()]) if has_win else True
@@ -145,6 +153,7 @@ def expand_dual_athlete_transitions(df, split_mode=False, onesided_map=None):
                 'Athlete_Role': 'B',
                 'Source_Resolved': src_b,
                 'Target_Resolved': tgt_b,
+                'Athlete_Group': group_b,
                 'Scored_Points': points if instigator == 'B' else 0,
                 'Executed_Sub': (action in ['sub', 'submission'] and instigator == 'B'),
                 'Is_Winner': (win_val in ['b', str(name_b).lower()]) if has_win else True
@@ -154,7 +163,6 @@ def expand_dual_athlete_transitions(df, split_mode=False, onesided_map=None):
     return pd.DataFrame(processed)
 
 def filter_dataset(df, args):
-    """Filters expanded DataFrame based on CLI options."""
     filtered = df.copy()
 
     if getattr(args, 'match_id', None) is not None:
@@ -181,13 +189,20 @@ def filter_dataset(df, args):
         if w_col:
             filtered = filtered[filtered[w_col].astype(str).str.lower() == args.weight.lower()]
 
+    if getattr(args, 'group', None):
+        filtered = filtered[filtered['Athlete_Group'].astype(str).str.lower() == args.group.lower()]
+
     if getattr(args, 'win_only', False):
         filtered = filtered[filtered['Is_Winner'] == True]
 
     return filtered
 
+def get_incoming_link_counts(df):
+    if df.empty:
+        return {}
+    return df['Target_Resolved'].value_counts().to_dict()
+
 def load_and_preprocess(csv_path):
-    """Loads CSV, standardizes column names, and computes duration seconds."""
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"File '{csv_path}' was not found.")
 
