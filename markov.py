@@ -8,13 +8,24 @@ Differential Comparison Modes:
     --compare-win            Compare Winners vs. Losers: ΔP = P(win) - P(loss).
     --group_1 <str> --group_2 <str>
                              Compare any two groups/teams: ΔP = P(group_1) - P(group_2).
-    --heatmap                Render differential output as a 2D heatmap.
+    --heatmap                Render differential output as a 2D diverging heatmap.
 
-CLI Options & Modes:
+Filtering & Threshold Options:
+    -lk, --link_count <int>  Node In-Degree Threshold (n >= lk).
+                             Prunes entire states (rows/columns/nodes) entered fewer
+                             than lk total times across the evaluated dataset.
+    -tk, --trans_count <int> Transition Edge Count Threshold (n >= tk).
+                             Suppresses specific (source -> target) transitions where
+                             the transition count is below tk. In graphs, edges with
+                             count < tk are not drawn. In heatmaps, cells with
+                             count < tk are zeroed out.
+
+Perspective & View Modes:
     -s, --split              Enable Perspective Split State Mode (_T / _B).
     -s_one, --split_onesided <pairs>
                              One-Sided Split State Mode (e.g. -s_one "1/A,2/A").
-    -lk, --link_count <int>  Threshold for minimum incoming transition count (n >= lk).
+
+Metadata Filter Options:
     -m, --match-id <ID>      Filter records to a single Match ID.
     --name <string>          Filter transitions by athlete name.
     --group <string>         Filter transitions to a single team/group.
@@ -23,6 +34,17 @@ CLI Options & Modes:
     --weight <class>         Filter by weight category (e.g., --weight Light).
     --win-only               Filter transitions to winning competitors only.
     -h, --help               Display argument help and exit.
+
+Examples:
+---------
+    1. Focus on primary hubs, but see all exits:
+       python markov.py markov_sample.csv -s --compare-win --heatmap -lk 3
+
+    2. Look at all states, but only display transitions repeated at least twice:
+       python markov.py markov_sample.csv -s --compare-win --heatmap -tk 2
+
+    3. Strict high-confidence mode (frequent states AND frequent transitions):
+       python markov.py markov_sample.csv -s --compare-win --heatmap -lk 3 -tk 2
 """
 
 import sys
@@ -41,15 +63,17 @@ def compute_prob_matrix(df, allowed_states=None, min_incoming_links=0):
     all_states = sorted(list(set(df['Source_Resolved']).union(set(df['Target_Resolved']))))
     counts = raw_counts.reindex(index=all_states, columns=all_states, fill_value=0)
 
+    # 1. State/Node-level filtering (-lk)
     if allowed_states is not None:
-        valid_states = [s for s in allowed_states if s in counts.index or s in counts.columns]
+        # Strictly intersect with the pre-qualified allowed states
+        valid_states = sorted([s for s in allowed_states if s in counts.index or s in counts.columns])
         counts = counts.reindex(index=valid_states, columns=valid_states, fill_value=0)
-        all_states = sorted(valid_states)
+        all_states = valid_states
     elif min_incoming_links > 0:
         incoming_totals = counts.sum(axis=0)
-        valid_states = incoming_totals[incoming_totals >= min_incoming_links].index.tolist()
+        valid_states = sorted(incoming_totals[incoming_totals >= min_incoming_links].index.tolist())
         counts = counts.reindex(index=valid_states, columns=valid_states, fill_value=0)
-        all_states = sorted(valid_states)
+        all_states = valid_states
 
     if len(all_states) == 0:
         return pd.DataFrame(), pd.DataFrame(), []
@@ -58,16 +82,28 @@ def compute_prob_matrix(df, allowed_states=None, min_incoming_links=0):
     probs = counts.div(row_sums, axis=0).fillna(0.0)
     return probs, counts, all_states
 
-def plot_differential_heatmap(delta_p, label_1="Cohort 1", label_2="Cohort 2"):
+def plot_differential_heatmap(delta_p, total_counts=None, min_trans_count=0, label_1="Cohort 1", label_2="Cohort 2"):
     if delta_p.empty:
         print("Warning: Differential matrix is empty; skipping heatmap.")
         return
 
+    display_delta = delta_p.copy()
+
+    # Zero out cells that do not satisfy the transition count threshold (-tk)
+    if min_trans_count > 0 and total_counts is not None:
+        mask = total_counts < min_trans_count
+        display_delta[mask] = 0.0
+
     fig, ax = plt.subplots(figsize=(12, 10))
-    states = list(delta_p.index)
+    states = list(display_delta.index)
 
     norm = mcolors.TwoSlopeNorm(vmin=-1.0, vcenter=0.0, vmax=1.0)
-    cax = ax.imshow(delta_p.values, cmap='coolwarm_r', norm=norm, interpolation='nearest')
+    cax = ax.imshow(
+        display_delta.values,
+        cmap='coolwarm_r',
+        norm=norm,
+        interpolation='nearest'
+    )
     cax.format_cursor_data = lambda data: ""
 
     ax.set_xticks(range(len(states)))
@@ -77,7 +113,7 @@ def plot_differential_heatmap(delta_p, label_1="Cohort 1", label_2="Cohort 2"):
 
     for i in range(len(states)):
         for j in range(len(states)):
-            val = delta_p.iloc[i, j]
+            val = display_delta.iloc[i, j]
             if abs(val) >= 0.01:
                 color = 'white' if abs(val) > 0.45 else 'black'
                 ax.text(j, i, f"{val:+.2f}", ha='center', va='center',
@@ -86,7 +122,8 @@ def plot_differential_heatmap(delta_p, label_1="Cohort 1", label_2="Cohort 2"):
     cbar = fig.colorbar(cax, ax=ax, fraction=0.046, pad=0.04)
     cbar.set_label(f'ΔP: Favors {label_2} (< 0)  vs.  Favors {label_1} (> 0)', fontsize=10, fontweight='bold')
 
-    ax.set_title(f"State Transition Differential Heatmap [{label_1} vs. {label_2}]", fontsize=13, fontweight='bold', pad=15)
+    title_suffix = f" [Trans Count >= {min_trans_count}]" if min_trans_count > 0 else ""
+    ax.set_title(f"State Transition Differential Heatmap [{label_1} vs. {label_2}]{title_suffix}", fontsize=13, fontweight='bold', pad=15)
     ax.set_xlabel("Target State", fontsize=11, fontweight='bold')
     ax.set_ylabel("Source State", fontsize=11, fontweight='bold')
     fig.tight_layout()
@@ -99,7 +136,7 @@ def plot_differential_heatmap(delta_p, label_1="Cohort 1", label_2="Cohort 2"):
     except Exception as e:
         print(f'>>> [Note] GUI window skipped: {e}')
 
-def plot_differential_graph(delta_p, label_1="Cohort 1", label_2="Cohort 2", split_mode=False):
+def plot_differential_graph(delta_p, total_counts=None, min_trans_count=0, label_1="Cohort 1", label_2="Cohort 2", split_mode=False):
     if delta_p.empty:
         print("Warning: Differential matrix is empty; skipping graph.")
         return
@@ -116,8 +153,9 @@ def plot_differential_graph(delta_p, label_1="Cohort 1", label_2="Cohort 2", spl
     for src in states:
         for tgt in states:
             diff = delta_p.loc[src, tgt]
-            if abs(diff) >= 0.02:
-                G.add_edge(src, tgt, weight=diff)
+            c = total_counts.loc[src, tgt] if total_counts is not None else min_trans_count
+            if abs(diff) >= 0.02 and c >= min_trans_count:
+                G.add_edge(src, tgt, weight=diff, count=c)
                 active_edges.append((src, tgt))
                 edge_colors.append('#16a34a' if diff > 0 else '#dc2626')
                 edge_widths.append(max(1.5, abs(diff) * 6.0))
@@ -193,7 +231,8 @@ def plot_differential_graph(delta_p, label_1="Cohort 1", label_2="Cohort 2", spl
             zorder=10
         )
 
-    ax.set_title(f"Differential Transitions [Green = Favors {label_1} | Red = Favors {label_2}]",
+    title_suffix = f" [Trans Count >= {min_trans_count}]" if min_trans_count > 0 else ""
+    ax.set_title(f"Differential Transitions [Green = Favors {label_1} | Red = Favors {label_2}]{title_suffix}",
                  fontsize=13, fontweight='bold', pad=15)
     ax.axis('off')
     fig.tight_layout()
@@ -206,7 +245,7 @@ def plot_differential_graph(delta_p, label_1="Cohort 1", label_2="Cohort 2", spl
     except Exception as e:
         print(f'>>> [Note] GUI window skipped: {e}')
 
-def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=False):
+def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=False, min_trans_count=0):
     if len(all_states) == 0:
         print("Warning: No nodes satisfy the specified threshold.")
         return
@@ -217,7 +256,7 @@ def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=Fals
     for src in probs.index:
         for tgt in probs.columns:
             c = counts.loc[src, tgt]
-            if c > 0:
+            if c >= max(1, min_trans_count):
                 G.add_edge(src, tgt, weight=probs.loc[src, tgt], count=c)
 
     fig, ax = plt.subplots(figsize=(14, 9))
@@ -315,7 +354,9 @@ def main():
     parser.add_argument('-s_one', '--split_onesided', type=str, default=None,
                         help='One-sided split state mode with match/competitor pairs (e.g. "1/A,2/A,3/B")')
     parser.add_argument('-lk', '--link_count', type=int, default=0,
-                        help='Minimum incoming transition threshold (n >= lk)')
+                        help='Minimum incoming transition count threshold (n >= lk)')
+    parser.add_argument('-tk', '--trans_count', type=int, default=0,
+                        help='Minimum transition sample threshold (n >= tk; suppresses edges/cells below tk)')
     parser.add_argument('--compare-win', action='store_true',
                         help='Visualize differential transitions: P(win) - P(loss)')
     parser.add_argument('--group_1', type=str, default=None, help='First group for differential comparison')
@@ -367,31 +408,51 @@ def main():
             return
 
         combined_df = pd.concat([df_1, df_2])
+
+        # Node-Level Qualification (-lk): Filter strictly on incoming links
         if args.link_count > 0:
             inbound_counts = combined_df['Target_Resolved'].value_counts()
-            allowed_states = inbound_counts[inbound_counts >= args.link_count].index.tolist()
+            allowed_states = sorted(inbound_counts[inbound_counts >= args.link_count].index.tolist())
         else:
             allowed_states = sorted(list(set(combined_df['Source_Resolved']).union(set(combined_df['Target_Resolved']))))
 
-        p_1, _, _ = compute_prob_matrix(df_1, allowed_states=allowed_states)
-        p_2, _, _ = compute_prob_matrix(df_2, allowed_states=allowed_states)
+        # Compute probability and count matrices for both cohorts restricted to qualified states
+        p_1, c_1, _ = compute_prob_matrix(df_1, allowed_states=allowed_states)
+        p_2, c_2, _ = compute_prob_matrix(df_2, allowed_states=allowed_states)
 
         all_union_states = sorted(allowed_states)
         p_1 = p_1.reindex(index=all_union_states, columns=all_union_states, fill_value=0.0)
         p_2 = p_2.reindex(index=all_union_states, columns=all_union_states, fill_value=0.0)
 
+        c_1 = c_1.reindex(index=all_union_states, columns=all_union_states, fill_value=0)
+        c_2 = c_2.reindex(index=all_union_states, columns=all_union_states, fill_value=0)
+        total_counts = c_1.add(c_2, fill_value=0)
+
         delta_p = p_1 - p_2
 
+        threshold_notes = []
+        if args.link_count > 0:
+            threshold_notes.append(f"Inbound >= {args.link_count}")
+        if args.trans_count > 0:
+            threshold_notes.append(f"Trans Count >= {args.trans_count}")
+        thresh_str = f" [Thresholds: {', '.join(threshold_notes)}]" if threshold_notes else ""
+
         print("\n" + "=" * 65)
-        print(f"DIFFERENTIAL TRANSITION MATRIX: ΔP = P({c1_name}) - P({c2_name})")
+        print(f"DIFFERENTIAL TRANSITION MATRIX: ΔP = P({c1_name}) - P({c2_name}){thresh_str}")
         print(f"Positive (+): Favors {c1_name} | Negative (-): Favors {c2_name}")
         print("=" * 65)
         print(delta_p.round(2))
 
         if args.heatmap:
-            plot_differential_heatmap(delta_p, label_1=c1_name, label_2=c2_name)
+            plot_differential_heatmap(
+                delta_p, total_counts=total_counts, min_trans_count=args.trans_count,
+                label_1=c1_name, label_2=c2_name
+            )
         else:
-            plot_differential_graph(delta_p, label_1=c1_name, label_2=c2_name, split_mode=split_active)
+            plot_differential_graph(
+                delta_p, total_counts=total_counts, min_trans_count=args.trans_count,
+                label_1=c1_name, label_2=c2_name, split_mode=split_active
+            )
         return
 
     filter_info = []
@@ -403,6 +464,7 @@ def main():
         filter_info.append("Unsplit Mode")
 
     if args.link_count > 0: filter_info.append(f'Inbound>={args.link_count}')
+    if args.trans_count > 0: filter_info.append(f'TransCount>={args.trans_count}')
     if args.match_id: filter_info.append(f'Match={args.match_id}')
     if args.name: filter_info.append(f'Name={args.name}')
     if args.group: filter_info.append(f'Group={args.group}')
@@ -412,10 +474,15 @@ def main():
     if args.win_only: filter_info.append('Winners Only')
     title_suffix = f"({', '.join(filter_info)})" if filter_info else ''
 
-    probs, counts, all_states = compute_prob_matrix(filtered, min_incoming_links=args.link_count)
+    probs, counts, all_states = compute_prob_matrix(
+        filtered, min_incoming_links=args.link_count
+    )
 
     print(f'>>> Processing {len(filtered)} transition records {title_suffix}...')
-    analyze_and_plot(probs, counts, all_states, title_suffix=title_suffix, split_mode=split_active)
+    analyze_and_plot(
+        probs, counts, all_states, title_suffix=title_suffix,
+        split_mode=split_active, min_trans_count=args.trans_count
+    )
 
     print('\n--- Transition Probability Matrix ---')
     print(probs.round(2))

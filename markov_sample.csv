@@ -1,17 +1,49 @@
 Timestamp In / Out,Primary State,Dominant Athlete,Substate,Exit Action,Subaction,Action Instigator,Points,Adv/Pen, Next State,Match ID,Name A,Group A,Name B,Group B,Belt,Age,Weight Class,Win
-4:00/3:57,St,N,,DGP,,N,,,Fty,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
-3:57/3:53,Fty,N,,Reset,,N,,-1/-1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
-3:53/3:50,St,N,,DGP,,N,,,Fty,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
-3:50/3:38,Fty,N,,Reset,,N,,-1/1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
-3:38/3:27,St,N,,DGP,,N,,-1/1,Fty,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
-3:27/3:03,Fty,N,,Reset,,N,,-1/-1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
-3:03/3:02,St,N,,DGP,,N,,,CG,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
-3:02/2:23,CG,A,,BT,,A,4,,BM,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
-2:23/0:00,BM,A,,Time,,N,,,End,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,XType BJJ,Grey,11,Light,A
-4:00/3:55,St,N,,DGPull,,N,,,Fty,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
-3:55/3:23,Fty,N,,Sc,,A,,,HG,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+4:00/3:57,St,N,,DGP,,N,,,50-50,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:57/3:53,50-50,N,,Reset,,N,,-1/-1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:53/3:50,St,N,,DGP,,N,,,50-50,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:50/3:38,50-50,N,,Reset,,N,,-1/1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:38/3:27,St,N,,DGP,,N,,-1/1,50-50,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:27/3:03,50-50,N,,Reset,,N,,-1/-1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:03/3:02,St,N,,DGP,,N,,,CG,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:02/2:23,CG,A,,BTake,,A,4,,BM,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+2:23/0:00,BM,A,,Time,,N,,,End,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+4:00/3:55,St,N,,DGPull,,N,,,50-50,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+3:55/3:23,50-50,N,,Scr,,A,,,HG,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
 3:23/2:36,HG,A,,GPass,,A,3,,SC,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
 2:26/2:02,SC,A,,S-Failed,AB-Failed,B,,,OG,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
-2:02/1:50,OG,B,,Sw,,A,3,,FM,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
-1:50/0:55,FM,A,,BT,,A,4,,BM,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+2:02/1:50,OG,B,,Sweep,,A,2,,FM,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+1:50/0:55,FM,A,,BTake,,A,4,,BM,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
 0:55/0:46,BM,A,,Sub,BowA,A,,,End,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+4:00/3:40,St,N,,GPull,,B,,,CG,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+3:40/3:00,CG,B,,GBreak,Standing,B,,,OG,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+3:00/2:48,OG,B,,DGP,,N,,,50-50,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+2:48/2:35,50-50,N,,Sweep,,B,2,,HG,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+2:35/2:25,HG,B,,GPass,,B,3,,SC,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+2:25/1:55,SC,B,,Scr,,A,,,HG,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+1:55/0:25,HG,B,,Sweep,,B,6,,FM,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+0:25/0:05,FM,B,,BTake,,B,4,,BM,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+0:05/0:00,BM,B,,Time,,N,4,,End,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+4:00/3:49,St,N,,GPull,,A,,,OG,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+3:49/3:28,OG,B,,Scr,,A,,,St,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+3:31/3:28,St,A,,Takedown,SL,A,2,,SC,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+3:28/2:21,SC,A,,Scr,,B,,,HG,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+2:21/0:54,HG,A,,GPass,,A,3,,SC,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+0:54/0:15,SC,A,,Scr,,B,,,HG,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+0:15/0:10,HG,A,,GPass,,A,3,,SC,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+0:10/0:00,SC,A,,Time,,N,,,End,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+4:00/3:55,St,N,,GPull,,A,,,CG,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+3:55/2:56,CG,B,,GBreak,,B,,,OG,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+2:56/2:37,OG,B,,Sweep,,A,2,,OG,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+2:41/2:37,OG,A,,Gpass,,A,3,,SC,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+2:37/1:56,SC,A,,Scr,,B,,,HG,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+1:56/0:00,HG,B,,Time,,N,,,End,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+4:00/3:49,St,N,,BTake,,A,4,1/,BM,6,Max Rolik,,Benjamin Kuci,,Grey,11,Light,A
+3:49/3:33,BM,A,,Scr,,B,,,CG,6,Max Rolik,,Benjamin Kuci,,Grey,11,Light,A
+3:33/3:11,CG,B,Spider,Sub,Armbar,A,,,End,6,Max Rolik,,Benjamin Kuci,,Grey,11,Light,A
+4:00/3:49,St,N,,DGP,,N,,,50-50,7,Davis Jackson Newton,,Nelson James Cox,,Grey,11,Light,B
+3:49/3:22,50-50,N,,Reset,,N,,-2/-1,St,7,Davis Jackson Newton,,Nelson James Cox,,Grey,11,Light,B
+3:22/3:13,St,N,,DGP,,N,,,50-50,7,Davis Jackson Newton,,Nelson James Cox,,Grey,11,Light,B
+3:13/2:46,50-50,N,,Reset,,B,2,-1/-1,St,7,Davis Jackson Newton,,Nelson James Cox,,Grey,11,Light,B
+2:46/2:31,St,N,,Takedown,SL,A,2,,CG,7,Davis Jackson Newton,,Nelson James Cox,,Grey,11,Light,B
+2:31/0:00,CG,A,,Time,,N,,,End,7,Davis Jackson Newton,,Nelson James Cox,,Grey,11,Light,B
