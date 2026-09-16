@@ -1,9 +1,26 @@
 """
 BJJ Match Performance Reporter
 ==============================
-Aggregates state dwell times, scoring actions, submission analytics, and
-comparative metrics across matches. Supports canonical unsplit states, perspective
-split states (_T / _B), designated one-sided match views, and cross-cohort comparisons.
+Aggregates state dwell times, comparative scoring actions by split state,
+submission analytics, and cross-cohort metrics across BJJ match records.
+
+Key Features & Enhancements:
+----------------------------
+1. State Dwell Normalization:
+   Normalizes duration metrics per match (seconds / match) to prevent
+   rare single-entry stalls from distorting comparative profiles.
+
+2. Comparative Scoring by Originating State:
+   Contrasts point production by originating position (Source_Resolved)
+   between Winners and Losers, quantifying where decisive scoring occurs.
+
+3. Perspective Split State Resolution (_T / _B):
+   Splits symmetric and asymmetric states (CG, OG, FM, BM, HG, SC) into
+   Top (_T) and Bottom (_B) perspectives based on the 'Top Athlete' field.
+
+4. Generalized Cohort Comparisons:
+   Supports side-by-side comparative breakdowns across any demographic
+   attribute (Belt, Age, Weight Class, Team/Group, Win/Loss).
 
 Usage:
 ------
@@ -17,40 +34,37 @@ Positional Arguments:
 View & Perspective Modes:
 -------------------------
     -s, --split              Enable Perspective Split State Mode (_T / _B).
-                             Splits symmetric/asymmetric states (CG, OG, FM,
-                             BM, HG, SC) into Top (_T) and Bottom (_B) positions
-                             relative to each athlete's perspective.
+                             Splits dynamic guards and dominant pins relative
+                             to Top Athlete designation.
                              Default (without -s): Canonical unsplit states.
 
     -s_one, --split_onesided <pairs>
                              One-Sided Split State Mode.
-                             Isolates reporting metrics strictly from the
-                             viewpoint of a designated competitor (A or B) across
-                             specified matches.
+                             Isolates metrics strictly from the perspective of
+                             a designated competitor across specified matches.
                              Format: Comma-separated "match_id/competitor" pairs.
                              Example: -s_one "1/A,2/A,3/B"
 
 Threshold & Filtering Options:
 ------------------------------
     -lk, --link_count <int>  Minimum incoming transition threshold (n >= lk).
-                             Excludes states entered fewer than lk total times.
+                             Prunes states entered fewer than lk total times.
 
-    -m, --match-id <ID>      Filter records to a single match by its Match ID (e.g., -m 1).
+    -m, --match-id <ID>      Filter records to a single Match ID (e.g., -m 1).
 
-    --name <string>          Filter transitions involving a specific athlete by name
-                             (e.g., --name "Eymen Agah Saygili").
+    --name <string>          Filter transitions involving a specific competitor
+                             by name (e.g., --name "Eymen Agah Saygili").
 
     --group <string>         Filter transitions to a single team/group.
 
-    --belt <rank>            Filter by belt rank (e.g., --belt Grey, --belt yellow).
+    --belt <rank>            Filter by belt rank (e.g., --belt Grey, --belt Yellow).
 
     --age <int>              Filter by athlete age (e.g., --age 11).
 
-    --weight <class>         Filter by weight category (e.g., --weight Light,
-                             --weight Feather).
+    --weight <class>         Filter by weight class (e.g., --weight Light).
 
-    --win-only               Filter metrics exclusively to the perspective trajectory
-                             of winning competitors.
+    --win-only               Filter metrics exclusively to the trajectory of
+                             winning competitors.
 
 Differential & Cohort Comparison Modes:
 ---------------------------------------
@@ -59,48 +73,42 @@ Differential & Cohort Comparison Modes:
     --cohort_2 <val>         Second cohort value for differential comparison.
     --group_1 <str> --group_2 <str>
                              Legacy shorthand for team/group comparisons.
-                             (Equivalent to: --compare-by group --cohort_1 <str> --cohort_2 <str>)
     Default Comparison:      When no cohort flags are specified, Section 4 defaults
                              to comparing Winners vs. Losers.
 
     -h, --help               Display the built-in argument help manual and exit.
-    
-    e.g.python report.py markov_sample.csv -s --compare-by belt --cohort_1 Yellow --cohort_2 Grey
-        python report.py markov_sample.csv -s --compare-by age --cohort_1 11 --cohort_2 12
+
 Output Sections:
 ----------------
     1. Total Dwell Time by State:
-       Aggregates cumulative time (seconds), total entries, average dwell per entry,
+       Aggregates cumulative time (seconds), total entries, time per match,
        and percentage of total match time spent in each state.
 
-    2. Scoring by Exit Action:
-       Summarizes total points scored and successful execution counts broken down
-       by transition action (e.g., sweeps, guard passes, back takes).
+    2. Scoring by Originating State (Winners vs. Losers):
+       Contrasts point production and execution frequencies between winners
+       and losers by originating positional state.
 
     3. Submission Metrics:
-       Provides total submission counts, broken down both by the originating
-       positional state and by the specific finishing technique (subaction).
+       Details submission frequencies broken down by originating state
+       and specific finishing technique (subaction).
 
     4. Cohort Comparative Breakdown:
-       Compares top control time, bottom guard time, and average dwell time
-       per position between two cohorts (e.g., belts, weights, ages, teams, or win/loss).
+       Compares top control time, bottom guard time, and average time spent
+       per position per match between two designated cohorts.
 
-Example Calls:
---------------
-    1. Standard run on default file (unsplit states):
-       python report.py
+Example Commands:
+-----------------
+    1. Run standard report with split states (_T / _B):
+       python report.py markov_sample.csv -s
 
-    2. Compare Belts (Yellow vs. Grey) in Split State View:
+    2. Compare scoring and dwell between Belts:
        python report.py markov_sample.csv -s --compare-by belt --cohort_1 Yellow --cohort_2 Grey
 
-    3. Compare Weight Classes (Light vs. Middle):
+    3. Compare Weight Classes:
        python report.py markov_sample.csv -s --compare-by weight --cohort_1 Light --cohort_2 Middle
 
-    4. Compare Age Divisions with link threshold:
-       python report.py markov_sample.csv -s --compare-by age --cohort_1 11 --cohort_2 12 -lk 2
-
-    5. Compare Teams / Academies:
-       python report.py markov_sample.csv -s --compare-by group --cohort_1 "Norther Tribe" --cohort_2 "XType BJJ"
+    4. Analyze Winner perspective with link threshold:
+       python report.py markov_sample.csv -s --win-only -lk 2
 """
 
 import sys
@@ -110,6 +118,7 @@ import pandas as pd
 import numpy as np
 
 import bjj_core
+
 
 def print_reports(df, args):
     report_df = df.copy()
@@ -128,35 +137,70 @@ def print_reports(df, args):
         print("\nNo states satisfy the minimum incoming transition threshold.")
         return
 
+    # Count distinct matches in the active selection
+    match_col = next((c for c in ['Match ID', 'MatchID', 'Match_ID', 'Match'] if c in report_df.columns), None)
+    total_distinct_matches = report_df[match_col].nunique() if match_col else 1
     total_duration = report_df['Duration_Sec'].sum()
 
+    # -------------------------------------------------------------------------
     # 1. State Dwell Time Report
-    print("\n" + "=" * 60)
-    print("1. TOTAL DWELL TIME BY STATE")
-    print("=" * 60)
-    time_rep = report_df.groupby('Source_Resolved')['Duration_Sec'].agg(['sum', 'count', 'mean']).reset_index()
-    time_rep.columns = ['State', 'Total Time (s)', 'Entries', 'Avg Dwell / Entry (s)']
-    time_rep['% Total Time'] = ((time_rep['Total Time (s)'] / total_duration) * 100).round(1) if total_duration > 0 else 0.0
+    # -------------------------------------------------------------------------
+    print("\n" + "=" * 70)
+    print(f"1. TOTAL DWELL TIME BY STATE (Sample: {total_distinct_matches} Matches)")
+    print("=" * 70)
+    time_rep = report_df.groupby('Source_Resolved').agg(
+        Total_Time=('Duration_Sec', 'sum'),
+        Entries=('Duration_Sec', 'count')
+    ).reset_index()
+
+    time_rep['Time / Match (s)'] = (time_rep['Total_Time'] / total_distinct_matches).round(1)
+    time_rep['Avg / Entry (s)'] = (time_rep['Total_Time'] / time_rep['Entries']).round(1)
+    time_rep['% Total Time'] = ((time_rep['Total_Time'] / total_duration) * 100).round(1) if total_duration > 0 else 0.0
+
+    time_rep = time_rep.rename(columns={'Source_Resolved': 'State', 'Total_Time': 'Total Time (s)'})
+    time_rep = time_rep[['State', 'Total Time (s)', 'Entries', 'Time / Match (s)', 'Avg / Entry (s)', '% Total Time']]
     time_rep = time_rep.sort_values(by='Total Time (s)', ascending=False)
     print(time_rep.to_string(index=False))
 
-    # 2. Scoring by Exit Action
-    print("\n" + "=" * 60)
-    print("2. SCORING BY EXIT ACTION")
-    print("=" * 60)
+    # -------------------------------------------------------------------------
+    # 2. Scoring by Originating Split State (Winners vs. Losers)
+    # -------------------------------------------------------------------------
+    print("\n" + "=" * 70)
+    print("2. SCORING BY ORIGINATING SPLIT STATE (Winners vs. Losers)")
+    print("=" * 70)
     scoring_df = report_df[report_df['Scored_Points'] > 0]
     if scoring_df.empty:
         print("No points recorded for current selection.")
     else:
-        action_rep = scoring_df.groupby('Exit Action')['Scored_Points'].agg(['sum', 'count']).reset_index()
-        action_rep.columns = ['Action', 'Total Points', 'Success Count']
-        print(action_rep.sort_values(by='Total Points', ascending=False).to_string(index=False))
+        win_scores = scoring_df[scoring_df['Is_Winner'] == True].groupby('Source_Resolved')['Scored_Points'].agg(['sum', 'count'])
+        lose_scores = scoring_df[scoring_df['Is_Winner'] == False].groupby('Source_Resolved')['Scored_Points'].agg(['sum', 'count'])
 
+        all_scoring_states = sorted(list(set(scoring_df['Source_Resolved'])))
+        score_comp = pd.DataFrame(index=all_scoring_states)
+        score_comp['Winner_Pts'] = win_scores['sum']
+        score_comp['Winner_Scores (n)'] = win_scores['count']
+        score_comp['Loser_Pts'] = lose_scores['sum']
+        score_comp['Loser_Scores (n)'] = lose_scores['count']
+        score_comp = score_comp.fillna(0).astype(int)
+
+        score_comp['Net_Pts (W - L)'] = score_comp['Winner_Pts'] - score_comp['Loser_Pts']
+        score_comp = score_comp.sort_values(by=['Winner_Pts', 'Net_Pts (W - L)'], ascending=[False, False])
+        print(score_comp.to_string())
+
+        print("\n>> Scoring Breakdown by Specific Action & State:")
+        detailed = scoring_df.groupby(['Source_Resolved', 'Exit Action', 'Is_Winner'])['Scored_Points'].agg(['sum', 'count']).reset_index()
+        detailed['Cohort'] = detailed['Is_Winner'].map({True: 'Winner', False: 'Loser'})
+        detailed = detailed.rename(columns={'Source_Resolved': 'State', 'sum': 'Total Pts', 'count': 'Executions'})
+        detailed = detailed.sort_values(by=['State', 'Cohort', 'Total Pts'], ascending=[True, False, False])
+        print(detailed[['State', 'Exit Action', 'Cohort', 'Total Pts', 'Executions']].to_string(index=False))
+
+    # -------------------------------------------------------------------------
     # 3. Submission Overview
+    # -------------------------------------------------------------------------
     subs_df = report_df[report_df['Executed_Sub'] == True]
-    print("\n" + "=" * 60)
+    print("\n" + "=" * 70)
     print(f"3. SUBMISSION METRICS (Total Count: {len(subs_df)})")
-    print("=" * 60)
+    print("=" * 70)
 
     if subs_df.empty:
         print("No submissions recorded for current selection.")
@@ -171,7 +215,9 @@ def print_reports(df, args):
         sub_tech = subs_df_copy.groupby('Subaction_Clean').size().reset_index(name='Subs')
         print(sub_tech.sort_values(by='Subs', ascending=False).to_string(index=False))
 
+    # -------------------------------------------------------------------------
     # 4. Cohort Comparative Breakdown
+    # -------------------------------------------------------------------------
     attr = None
     c1_name = None
     c2_name = None
@@ -210,30 +256,42 @@ def print_reports(df, args):
         cohort_2 = report_df[report_df[target_col].astype(str).str.lower() == c2_name.lower()]
 
     if not cohort_1.empty and not cohort_2.empty:
-        print("\n" + "=" * 60)
+        print("\n" + "=" * 70)
         print(f"4. COMPARATIVE METRICS ({attr.upper()}): {c1_name} vs. {c2_name}")
-        print("=" * 60)
+        print("=" * 70)
+
+        c1_matches = cohort_1[match_col].nunique() if match_col else 1
+        c2_matches = cohort_2[match_col].nunique() if match_col else 1
 
         top_states = [s for s in report_df['Source_Resolved'].unique() if '_T' in s]
         bottom_states = [s for s in report_df['Source_Resolved'].unique() if '_B' in s]
 
-        c1_top = cohort_1[cohort_1['Source_Resolved'].isin(top_states)]['Duration_Sec'].sum()
-        c1_bot = cohort_1[cohort_1['Source_Resolved'].isin(bottom_states)]['Duration_Sec'].sum()
-        c2_top = cohort_2[cohort_2['Source_Resolved'].isin(top_states)]['Duration_Sec'].sum()
-        c2_bot = cohort_2[cohort_2['Source_Resolved'].isin(bottom_states)]['Duration_Sec'].sum()
+        c1_top_total = cohort_1[cohort_1['Source_Resolved'].isin(top_states)]['Duration_Sec'].sum()
+        c1_bot_total = cohort_1[cohort_1['Source_Resolved'].isin(bottom_states)]['Duration_Sec'].sum()
+        c2_top_total = cohort_2[cohort_2['Source_Resolved'].isin(top_states)]['Duration_Sec'].sum()
+        c2_bot_total = cohort_2[cohort_2['Source_Resolved'].isin(bottom_states)]['Duration_Sec'].sum()
 
-        print(f"Top Control Time:   {c1_name} = {c1_top:.1f}s | {c2_name} = {c2_top:.1f}s")
-        print(f"Bottom Guard Time:  {c1_name} = {c1_bot:.1f}s | {c2_name} = {c2_bot:.1f}s")
+        print(f"Bouts Evaluated:    {c1_name} = {c1_matches} matches | {c2_name} = {c2_matches} matches")
+        print(f"Top Control Time:   {c1_name} = {c1_top_total / c1_matches:.1f}s/match ({c1_top_total:.1f}s total) | "
+              f"{c2_name} = {c2_top_total / c2_matches:.1f}s/match ({c2_top_total:.1f}s total)")
+        print(f"Bottom Guard Time:  {c1_name} = {c1_bot_total / c1_matches:.1f}s/match ({c1_bot_total:.1f}s total) | "
+              f"{c2_name} = {c2_bot_total / c2_matches:.1f}s/match ({c2_bot_total:.1f}s total)")
 
-        c1_dwell = cohort_1.groupby('Source_Resolved')['Duration_Sec'].mean().rename(f'{c1_name}_Avg_Dwell')
-        c2_dwell = cohort_2.groupby('Source_Resolved')['Duration_Sec'].mean().rename(f'{c2_name}_Avg_Dwell')
+        all_states = sorted(list(set(cohort_1['Source_Resolved']).union(set(cohort_2['Source_Resolved']))))
+        c1_sums = cohort_1.groupby('Source_Resolved')['Duration_Sec'].sum().reindex(all_states, fill_value=0.0)
+        c2_sums = cohort_2.groupby('Source_Resolved')['Duration_Sec'].sum().reindex(all_states, fill_value=0.0)
 
-        comp_dwell = pd.concat([c1_dwell, c2_dwell], axis=1).fillna(0.0)
-        comp_dwell['Dwell_Delta'] = (comp_dwell[f'{c1_name}_Avg_Dwell'] - comp_dwell[f'{c2_name}_Avg_Dwell']).round(1)
-        print(f"\n>> Mean Dwell Time (s) per Position:")
+        c1_per_match = (c1_sums / c1_matches).rename(f'{c1_name}_s/Match')
+        c2_per_match = (c2_sums / c2_matches).rename(f'{c2_name}_s/Match')
+
+        comp_dwell = pd.concat([c1_per_match, c2_per_match], axis=1)
+        comp_dwell['Delta_s/Match'] = (comp_dwell[f'{c1_name}_s/Match'] - comp_dwell[f'{c2_name}_s/Match']).round(1)
+
+        print(f"\n>> Average Time Spent per Position per Match (seconds):")
         print(comp_dwell.round(1).to_string())
     elif attr != 'win':
         print(f"\n[Comparison Skipped] Requires records for both '{c1_name}' ({len(cohort_1)} rows) and '{c2_name}' ({len(cohort_2)} rows) in '{target_col}'.")
+
 
 def main():
     parser = argparse.ArgumentParser(description='Generate Performance Reports from BJJ Match Data.')
@@ -244,7 +302,7 @@ def main():
     parser.add_argument('-lk', '--link_count', type=int, default=0,
                         help='Minimum incoming transition threshold (n >= lk)')
 
-    # Generalized Cohort Differential Flags
+    # Generalized Cohort Comparison Flags
     parser.add_argument('--compare-by', type=str, default=None,
                         help='Attribute column to compare across (belt, age, weight, group, win)')
     parser.add_argument('--cohort_1', type=str, default=None,
@@ -284,6 +342,7 @@ def main():
         return
 
     print_reports(filtered, args)
+
 
 if __name__ == '__main__':
     main()
