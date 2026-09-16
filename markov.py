@@ -5,20 +5,20 @@ Usage:
     python markov.py [csv_path] [options]
 
 Differential Comparison Modes:
-    --compare-win            Compare Winners vs. Losers: ΔP = P(win) - P(loss).
+    --compare-by <attr>      Attribute column to compare across (belt, age, weight, group, win).
+    --cohort_1 <val>         First cohort value for differential comparison.
+    --cohort_2 <val>         Second cohort value for differential comparison:
+                             ΔP = P(cohort_1) - P(cohort_2).
+    --compare-win            Shorthand for comparing Winners vs. Losers: ΔP = P(win) - P(loss).
     --group_1 <str> --group_2 <str>
-                             Compare any two groups/teams: ΔP = P(group_1) - P(group_2).
+                             Legacy shorthand for team/group comparisons.
     --heatmap                Render differential output as a 2D diverging heatmap.
 
 Filtering & Threshold Options:
     -lk, --link_count <int>  Node In-Degree Threshold (n >= lk).
-                             Prunes entire states (rows/columns/nodes) entered fewer
-                             than lk total times across the evaluated dataset.
+                             Prunes entire states entered fewer than lk total times.
     -tk, --trans_count <int> Transition Edge Count Threshold (n >= tk).
-                             Suppresses specific (source -> target) transitions where
-                             the transition count is below tk. In graphs, edges with
-                             count < tk are not drawn. In heatmaps, cells with
-                             count < tk are zeroed out.
+                             Suppresses specific transitions where sample count < tk.
 
 Perspective & View Modes:
     -s, --split              Enable Perspective Split State Mode (_T / _B).
@@ -37,14 +37,14 @@ Metadata Filter Options:
 
 Examples:
 ---------
-    1. Focus on primary hubs, but see all exits:
-       python markov.py markov_sample.csv -s --compare-win --heatmap -lk 3
+    1. Compare Belts (Yellow vs. Grey):
+       python markov.py markov_sample.csv -s --compare-by belt --cohort_1 Yellow --cohort_2 Grey --heatmap
 
-    2. Look at all states, but only display transitions repeated at least twice:
-       python markov.py markov_sample.csv -s --compare-win --heatmap -tk 2
+    2. Compare Weights (Light vs. Middle):
+       python markov.py markov_sample.csv -s --compare-by weight --cohort_1 Light --cohort_2 Middle
 
-    3. Strict high-confidence mode (frequent states AND frequent transitions):
-       python markov.py markov_sample.csv -s --compare-win --heatmap -lk 3 -tk 2
+    3. Compare Ages (11 vs. 12) with threshold filtering:
+       python markov.py markov_sample.csv -s --compare-by age --cohort_1 11 --cohort_2 12 -lk 2 -tk 2
 """
 
 import sys
@@ -65,7 +65,6 @@ def compute_prob_matrix(df, allowed_states=None, min_incoming_links=0):
 
     # 1. State/Node-level filtering (-lk)
     if allowed_states is not None:
-        # Strictly intersect with the pre-qualified allowed states
         valid_states = sorted([s for s in allowed_states if s in counts.index or s in counts.columns])
         counts = counts.reindex(index=valid_states, columns=valid_states, fill_value=0)
         all_states = valid_states
@@ -89,7 +88,7 @@ def plot_differential_heatmap(delta_p, total_counts=None, min_trans_count=0, lab
 
     display_delta = delta_p.copy()
 
-    # Zero out cells that do not satisfy the transition count threshold (-tk)
+    # Zero out cells below the transition threshold (-tk)
     if min_trans_count > 0 and total_counts is not None:
         mask = total_counts < min_trans_count
         display_delta[mask] = 0.0
@@ -352,17 +351,32 @@ def main():
     parser.add_argument('csv_path', nargs='?', default='markov_sample.csv', help='Path to input CSV file')
     parser.add_argument('-s', '--split', action='store_true', help='Enable split states mode (_T and _B)')
     parser.add_argument('-s_one', '--split_onesided', type=str, default=None,
-                        help='One-sided split state mode with match/competitor pairs (e.g. "1/A,2/A,3/B")')
+                        help='One-sided split state mode with match/competitor pairs (e.g. "1/A,2/A")')
     parser.add_argument('-lk', '--link_count', type=int, default=0,
                         help='Minimum incoming transition count threshold (n >= lk)')
     parser.add_argument('-tk', '--trans_count', type=int, default=0,
                         help='Minimum transition sample threshold (n >= tk; suppresses edges/cells below tk)')
+
+    # Generalized Cohort Differential Flags
+    parser.add_argument('--compare-by', type=str, default=None,
+                        help='Attribute column to compare across (belt, age, weight, group, win)')
+    parser.add_argument('--cohort_1', type=str, default=None,
+                        help='First cohort value for differential comparison')
+    parser.add_argument('--cohort_2', type=str, default=None,
+                        help='Second cohort value for differential comparison')
+
+    # Shorthand & Legacy differential flags
     parser.add_argument('--compare-win', action='store_true',
-                        help='Visualize differential transitions: P(win) - P(loss)')
-    parser.add_argument('--group_1', type=str, default=None, help='First group for differential comparison')
-    parser.add_argument('--group_2', type=str, default=None, help='Second group for differential comparison')
+                        help='Shorthand for: --compare-by win')
+    parser.add_argument('--group_1', type=str, default=None,
+                        help='Legacy: First group for comparison (use --compare-by group --cohort_1)')
+    parser.add_argument('--group_2', type=str, default=None,
+                        help='Legacy: Second group for comparison (use --compare-by group --cohort_2)')
+
     parser.add_argument('--heatmap', action='store_true',
                         help='Render comparison as a 2D diverging heatmap instead of a graph')
+
+    # Standard filter options
     parser.add_argument('--match-id', '-m', type=str, default=None, help='Filter by Match ID')
     parser.add_argument('--name', type=str, default=None, help='Filter by athlete name')
     parser.add_argument('--group', type=str, default=None, help='Filter by specific team/group')
@@ -389,22 +403,48 @@ def main():
         print('Error: No transitions match the specified filters.')
         return
 
+    # Resolve Cohort Comparison Settings
+    attr = None
+    c1_name = None
+    c2_name = None
+
+    if args.compare_win:
+        attr = 'win'
+        c1_name = "Winners"
+        c2_name = "Losers"
+    elif args.compare_by and args.cohort_1 is not None and args.cohort_2 is not None:
+        attr = args.compare_by.strip().lower()
+        c1_name = str(args.cohort_1).strip()
+        c2_name = str(args.cohort_2).strip()
+    elif args.group_1 is not None and args.group_2 is not None:
+        attr = 'group'
+        c1_name = str(args.group_1).strip()
+        c2_name = str(args.group_2).strip()
+
     # Differential Comparison Pipeline
-    is_group_comp = (args.group_1 is not None and args.group_2 is not None)
-    if args.compare_win or is_group_comp:
-        if is_group_comp:
-            c1_name = args.group_1
-            c2_name = args.group_2
-            df_1 = filtered[filtered['Athlete_Group'].str.lower() == c1_name.lower()]
-            df_2 = filtered[filtered['Athlete_Group'].str.lower() == c2_name.lower()]
-        else:
-            c1_name = "Winners"
-            c2_name = "Losers"
+    if attr is not None:
+        col_map = {
+            'belt': 'Belt',
+            'age': 'Age',
+            'weight': next((c for c in ['Weight Class', 'Weight', 'WeightClass'] if c in filtered.columns), 'Weight Class'),
+            'group': 'Athlete_Group',
+            'win': 'Is_Winner'
+        }
+
+        target_col = col_map.get(attr)
+        if not target_col or target_col not in filtered.columns:
+            print(f"Error: Target comparison attribute '{attr}' not found in dataset columns.")
+            return
+
+        if attr == 'win':
             df_1 = filtered[filtered['Is_Winner'] == True]
             df_2 = filtered[filtered['Is_Winner'] == False]
+        else:
+            df_1 = filtered[filtered[target_col].astype(str).str.lower() == c1_name.lower()]
+            df_2 = filtered[filtered[target_col].astype(str).str.lower() == c2_name.lower()]
 
         if df_1.empty or df_2.empty:
-            print(f"Error: Comparison requires data for both '{c1_name}' ({len(df_1)} rows) and '{c2_name}' ({len(df_2)} rows).")
+            print(f"Error: Comparison requires records for both '{c1_name}' ({len(df_1)} rows) and '{c2_name}' ({len(df_2)} rows) in '{target_col}'.")
             return
 
         combined_df = pd.concat([df_1, df_2])
@@ -438,7 +478,7 @@ def main():
         thresh_str = f" [Thresholds: {', '.join(threshold_notes)}]" if threshold_notes else ""
 
         print("\n" + "=" * 65)
-        print(f"DIFFERENTIAL TRANSITION MATRIX: ΔP = P({c1_name}) - P({c2_name}){thresh_str}")
+        print(f"DIFFERENTIAL TRANSITION MATRIX ({attr.upper()}): ΔP = P({c1_name}) - P({c2_name}){thresh_str}")
         print(f"Positive (+): Favors {c1_name} | Negative (-): Favors {c2_name}")
         print("=" * 65)
         print(delta_p.round(2))
@@ -455,6 +495,7 @@ def main():
             )
         return
 
+    # Standard non-differential path
     filter_info = []
     if args.split_onesided:
         filter_info.append(f"One-Sided: {args.split_onesided}")
