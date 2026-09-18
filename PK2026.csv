@@ -1,4 +1,4 @@
-Timestamp In / Out,Primary State,Dominant Athlete,Substate,Exit Action,Subaction,Action Instigator,Points,Adv/Pen, Next State,Match ID,Name A,Group A,Name B,Group B,Belt,Age,Weight Class,Win
+Timestamp In / Out,Primary State,Top Athlete,Substate,Exit Action,Subaction,Action Instigator,Points,Adv/Pen, Next State,Match ID,Name A,Group A,Name B,Group B,Belt,Age,Weight Class,Win
 4:00/3:57,St,N,,DGP,,N,,,50-50,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
 3:57/3:53,50-50,N,,Reset,,N,,-1/-1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
 3:53/3:50,St,N,,DGP,,N,,,50-50,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
@@ -120,7 +120,7 @@ Timestamp In / Out,Primary State,Dominant Athlete,Substate,Exit Action,Subaction
 3:55/3:43,OG,B,,Sweep,,A,2,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
 3:43/3:22,OG,A,,Sweep,,B,2,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
 3:22/3:07,OG,B,,Sweep,,A,2,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
-3:07/1:52,OG,A,,Sweeo,,A,2,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+3:07/1:52,OG,A,,Sweep,,A,2,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
 1:52/1:40,OG,A,,Scr,,N,,/1,St,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
 1:40/1:23,St,N,,GPull,,B,,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
 1:23/0:47,OG,A,,Scr,,N,,,St,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
@@ -128,3 +128,44 @@ Timestamp In / Out,Primary State,Dominant Athlete,Substate,Exit Action,Subaction
 0:36/0:27,OG,A,,Scr,,N,,,St,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
 0:27/0:17,St,N,,Takedown,DL,B,2,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
 0:17/0:00,OG,B,,Time,,N,,,End,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+4:00/3:48,St,N,,GPull,,A,,,CG,24,Davi Carvalho de Andrade,,Antonio Puno,,Yellow,12,Feather,A
+3:48/3:08,CG,A,,Sub,Armbar,A,,,End,24,Davi Carvalho de Andrade,,Antonio Puno,,Yellow,12,Feather,A
+4:00/3:48,St,N,,GPull,,A,,,OG,25,Ayub Shuhrat Ogli Umar,,Max Leyva,,Yellow,12,Feather,A
+3:38/3:25,OG,B,,Sweep,,A,2,,OG,25,Ayub Shuhrat Ogli Umar,,Max Leyva,,Yellow,12,Feather,A
+3:25/1:10,OG,A,,BTake,,A,4,2/,BM,25,Ayub Shuhrat Ogli Umar,,Max Leyva,,Yellow,12,Feather,A
+1:10/1:07,BM,A,,Sub,RNC,A,,,End,25,Ayub Shuhrat Ogli Umar,,Max Leyva,,Yellow,12,Feather,A
+4:00/3:58,St,N,,GPull,,A,,,OG,26,Tomás Santos Esteves,,Evan Gray Patterson,,Grey,11,Light,A
+3:58/3:35,OG,B,,GuardClose,,A,,,CG,26,Tomás Santos Esteves,,Evan Gray Patterson,,Grey,11,Light,A
+3:35/2:48,CG,B,,Sub,Armbar,A,,,End,26,Tomás Santos Esteves,,Evan Gray Patterson,,Grey,11,Light,A
+4:00/3:53,St,N,,GPull,,B,,,OG,27,Evan Gray Patterson,,Grayson Mitchell Chpman,,Grey,11,Light,A
+3:53/3:11,OG,A,,Scr,,B,,/2,St,27,Evan Gray Patterson,,Grayson Mitchell Chpman,,Grey,11,Light,A
+3:11/3:03,St,N,,GPull,,B,,,OG,27,Evan Gray Patterson,,Grayson Mitchell Chpman,,Grey,11,Light,A
+3:03/2:33,OG,A,,GPass,,A,,7,FM,27,Evan Gray Patterson,,Grayson Mitchell Chpman,,Grey,11,Light,A
+2:33/2:30,FM,A,,Sub,Armbar,A,,,End,27,Evan Gray Patterson,,Grayson Mitchell Chpman,,Grey,11,Light,A
+4:00/3:53,St,N,,Takedown,GPull,B,2,,OG,28,Bentley Otto Leskovec,,Lukas Ryan Hopkins,,Yellow,12,Feather,A
+3:53/3:25,OG,B,,BTake,,A,4,,BM,28,Bentley Otto Leskovec,,Lukas Ryan Hopkins,,Yellow,12,Feather,A
+3:25/0:11,BM,A,,Sub,RNC,A,,,End,28,Bentley Otto Leskovec,,Lukas Ryan Hopkins,,Yellow,12,Feather,A
+4:00/3:39,St,N,,Sub,Armbar,A,,,End,29,Jace Jared Tan,,Maximus Prime Cooperman,,Yellow,11,Middle,A
+4:00/3:52,St,N,,DGP,,N,,,50-50,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+3:52/3:35,50-50,N,,Reset,,N,,-1/-1,St,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+3:35/3:20,St,N,,DGP,,N,,,OG,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+3:20/2:46,OG,A,,Scr,,A,,,HG,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+2:46/2:11,HG,A,,GPass,,A,3,2/,SC,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+2:11/1:54,SC,A,,Scr,,B,,,HG,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+1:54/1:40,HG,A,,Sweep,,B,2,,CG,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+1:40/1:00,CG,B,,Sweep,,A,2,,SC,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+1:00/0:52,SC,A,,BTake,,A,4,,BM,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+0:52/0:33,BM,A,,Reset,,A,2,,St,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+0:33/0:20,St,N,,GPull,,A,,,OG,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+0:20/0:00,OG,B,,Time,,N,,,End,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+4:00/3:54,St,N,,DGP,,N,,,50-50,31,Davi Oliveira Barreto,,Emiliano Cruz Rodriguez,,Yellow,11,Middle,A
+3:54/3:32,50-50,N,,Scr,,N,1/1,,OG,31,Davi Oliveira Barreto,,Emiliano Cruz Rodriguez,,Yellow,11,Middle,A
+3:32/2:52,OG,B,,Sweep,,A,2,,OG,31,Davi Oliveira Barreto,,Emiliano Cruz Rodriguez,,Yellow,11,Middle,A
+2:52/2:36,OG,A,,GPass,,A,3,,SC,31,Davi Oliveira Barreto,,Emiliano Cruz Rodriguez,,Yellow,11,Middle,A
+2:36/1:53,SC,A,,MTake,,A,4,,FM,31,Davi Oliveira Barreto,,Emiliano Cruz Rodriguez,,Yellow,11,Middle,A
+1:53/1:16,FM,A,,Sub,Armbar,A,,,End,31,Davi Oliveira Barreto,,Emiliano Cruz Rodriguez,,Yellow,11,Middle,A
+4:00/3:52,St,N,,GPull,,A,,,OG,32,Davi Oliveira Barreto,,Gabriel Beltran Arantegui,,Yellow,11,Middle,A
+3:52/3:30,OG,B,,Sweep,,A,2,,OG,32,Davi Oliveira Barreto,,Gabriel Beltran Arantegui,,Yellow,11,Middle,A
+3:30/3:08,OG,A,,GPass,,A,3,,SC,32,Davi Oliveira Barreto,,Gabriel Beltran Arantegui,,Yellow,11,Middle,A
+3:08/2:54,SC,A,,MTake,,A,4,,FM,32,Davi Oliveira Barreto,,Gabriel Beltran Arantegui,,Yellow,11,Middle,A
+2:54/2:21,FM,A,,Sub,BowA,A,,,End,32,Davi Oliveira Barreto,,Gabriel Beltran Arantegui,,Yellow,11,Middle,A

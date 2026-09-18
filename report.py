@@ -2,10 +2,11 @@
 BJJ Match Performance Reporter
 ==============================
 Aggregates state dwell times, comparative scoring actions by split state,
-submission analytics, and cross-cohort metrics across BJJ match records.
+submission analytics, cross-cohort metrics, and empirical positional win
+conversion rates across BJJ match records.
 
-Key Features & Enhancements:
-----------------------------
+Key Features & Sections:
+------------------------
 1. State Dwell Normalization:
    Normalizes duration metrics per match (seconds / match) to prevent
    rare single-entry stalls from distorting comparative profiles.
@@ -14,13 +15,17 @@ Key Features & Enhancements:
    Contrasts point production by originating position (Source_Resolved)
    between Winners and Losers, quantifying where decisive scoring occurs.
 
-3. Perspective Split State Resolution (_T / _B):
-   Splits symmetric and asymmetric states (CG, OG, FM, BM, HG, SC) into
-   Top (_T) and Bottom (_B) perspectives based on the 'Top Athlete' field.
+3. Submission Metrics:
+   Details submission frequencies broken down by originating state
+   and specific finishing technique (subaction).
 
-4. Generalized Cohort Comparisons:
-   Supports side-by-side comparative breakdowns across any demographic
-   attribute (Belt, Age, Weight Class, Team/Group, Win/Loss).
+4. Cohort Comparative Breakdown:
+   Compares top control time, bottom guard time, and average time spent
+   per position per match between two designated cohorts.
+
+5. Positional Win Conversion Rate:
+   Measures the empirical win rate and victory count once each position or
+   perspective-split state (_T / _B) is achieved across unique bouts.
 
 Usage:
 ------
@@ -78,37 +83,19 @@ Differential & Cohort Comparison Modes:
 
     -h, --help               Display the built-in argument help manual and exit.
 
-Output Sections:
-----------------
-    1. Total Dwell Time by State:
-       Aggregates cumulative time (seconds), total entries, time per match,
-       and percentage of total match time spent in each state.
-
-    2. Scoring by Originating State (Winners vs. Losers):
-       Contrasts point production and execution frequencies between winners
-       and losers by originating positional state.
-
-    3. Submission Metrics:
-       Details submission frequencies broken down by originating state
-       and specific finishing technique (subaction).
-
-    4. Cohort Comparative Breakdown:
-       Compares top control time, bottom guard time, and average time spent
-       per position per match between two designated cohorts.
-
 Example Commands:
 -----------------
     1. Run standard report with split states (_T / _B):
-       python report.py markov_sample.csv -s
+       python report.py markov_PanKids2026.csv -s
 
-    2. Compare scoring and dwell between Belts:
-       python report.py markov_sample.csv -s --compare-by belt --cohort_1 Yellow --cohort_2 Grey
+    2. Run with link count threshold (prunes rare entries):
+       python report.py markov_PanKids2026.csv -s -lk 2
 
-    3. Compare Weight Classes:
-       python report.py markov_sample.csv -s --compare-by weight --cohort_1 Light --cohort_2 Middle
+    3. Compare Belts (Yellow vs. Grey):
+       python report.py markov_PanKids2026.csv -s --compare-by belt --cohort_1 Yellow --cohort_2 Grey
 
-    4. Analyze Winner perspective with link threshold:
-       python report.py markov_sample.csv -s --win-only -lk 2
+    4. Filter by Weight Class and Belt:
+       python report.py markov_PanKids2026.csv -s --belt Grey --weight Light
 """
 
 import sys
@@ -291,6 +278,54 @@ def print_reports(df, args):
         print(comp_dwell.round(1).to_string())
     elif attr != 'win':
         print(f"\n[Comparison Skipped] Requires records for both '{c1_name}' ({len(cohort_1)} rows) and '{c2_name}' ({len(cohort_2)} rows) in '{target_col}'.")
+
+    # -------------------------------------------------------------------------
+    # 5. Positional Win Conversion Rate (Split States)
+    # -------------------------------------------------------------------------
+    print("\n" + "=" * 70)
+    print("5. POSITIONAL WIN CONVERSION RATE (Success Rate by State Achieved)")
+    print("=" * 70)
+
+    if match_col:
+        # Collect all unique visits per athlete per match in each state
+        src_visits = report_df[[match_col, 'Athlete_Role', 'Source_Resolved', 'Is_Winner']].rename(
+            columns={'Source_Resolved': 'State'}
+        )
+        tgt_visits = report_df[[match_col, 'Athlete_Role', 'Target_Resolved', 'Is_Winner']].rename(
+            columns={'Target_Resolved': 'State'}
+        )
+        combined_visits = pd.concat([src_visits, tgt_visits]).drop_duplicates(
+            subset=[match_col, 'Athlete_Role', 'State']
+        )
+
+        # Exclude terminal absorbing match-end state
+        combined_visits = combined_visits[combined_visits['State'] != 'End']
+
+        # Total entries across all transitions (gross entry frequency)
+        gross_entries = report_df['Target_Resolved'].value_counts()
+
+        summary_rows = []
+        for state, group in combined_visits.groupby('State'):
+            bouts_reached = len(group)
+            wins = int(group['Is_Winner'].sum())
+            losses = bouts_reached - wins
+            win_pct = round((wins / bouts_reached) * 100, 1) if bouts_reached > 0 else 0.0
+            total_entries = int(gross_entries.get(state, len(group)))
+
+            summary_rows.append({
+                'State': state,
+                'Total Entries': total_entries,
+                'Bouts Reached': bouts_reached,
+                'Wins': wins,
+                'Losses': losses,
+                'Win Rate (%)': win_pct
+            })
+
+        conv_df = pd.DataFrame(summary_rows)
+        conv_df = conv_df.sort_values(by=['Win Rate (%)', 'Bouts Reached'], ascending=[False, False])
+        print(conv_df.to_string(index=False))
+    else:
+        print("[Skipped] 'Match ID' column required to compute bout-level conversion.")
 
 
 def main():
