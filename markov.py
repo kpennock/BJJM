@@ -1,10 +1,33 @@
 """
 BJJ Markov Chain Transition Analyzer
 ====================================
+Processes state transitions from BJJ match event logs, computes empirical
+Markov transition probability matrices, and visualizes directed transition graphs.
+Supports canonical unsplit states, perspective-split states (_T / _B), one-sided
+evaluations, cross-cohort differentials (ΔP), and targeted inbound state isolation.
+
 Usage:
+------
     python markov.py [csv_path] [options]
 
+Positional Arguments:
+---------------------
+    csv_path                 Path to the input CSV file. Defaults to
+                             'markov_sample.csv' if omitted.
+
+Inbound State Isolation:
+------------------------
+    -tgt, --target-state <state>
+                             Isolate transitions feeding directly into a specific
+                             target state (e.g., -tgt BM_T or -tgt CG_B).
+                             - Graph: Displays only predecessor states and edges
+                               pointing directly into the chosen position (target node
+                               is highlighted in yellow).
+                             - Console: Prints a ranked tabular breakdown showing the
+                               probability P(Source -> Target) and transition volume (n).
+
 Differential Comparison Modes:
+------------------------------
     --compare-by <attr>      Attribute column to compare across (belt, age, weight, group, win).
     --cohort_1 <val>         First cohort value for differential comparison.
     --cohort_2 <val>         Second cohort value for differential comparison:
@@ -15,17 +38,20 @@ Differential Comparison Modes:
     --heatmap                Render differential output as a 2D diverging heatmap.
 
 Filtering & Threshold Options:
+------------------------------
     -lk, --link_count <int>  Node In-Degree Threshold (n >= lk).
                              Prunes entire states entered fewer than lk total times.
     -tk, --trans_count <int> Transition Edge Count Threshold (n >= tk).
                              Suppresses specific transitions where sample count < tk.
 
 Perspective & View Modes:
+-------------------------
     -s, --split              Enable Perspective Split State Mode (_T / _B).
     -s_one, --split_onesided <pairs>
                              One-Sided Split State Mode (e.g. -s_one "1/A,2/A").
 
 Metadata Filter Options:
+------------------------
     -m, --match-id <ID>      Filter records to a single Match ID.
     --name <string>          Filter transitions by athlete name.
     --group <string>         Filter transitions to a single team/group.
@@ -35,16 +61,19 @@ Metadata Filter Options:
     --win-only               Filter transitions to winning competitors only.
     -h, --help               Display argument help and exit.
 
-Examples:
----------
-    1. Compare Belts (Yellow vs. Grey):
-       python markov.py markov_sample.csv -s --compare-by belt --cohort_1 Yellow --cohort_2 Grey --heatmap
+Target State & Filtering Examples:
+----------------------------------
+    1. Isolate incoming paths into Bottom Closed Guard (CG_B):
+       python markov.py markov_sample.csv -s -tgt CG_B
 
-    2. Compare Weights (Light vs. Middle):
-       python markov.py markov_sample.csv -s --compare-by weight --cohort_1 Light --cohort_2 Middle
+    2. Isolate winning paths leading into Top Back Mount (BM_T):
+       python markov.py markov_sample.csv -s -tgt BM_T --win-only
 
-    3. Compare Ages (11 vs. 12) with threshold filtering:
-       python markov.py markov_sample.csv -s --compare-by age --cohort_1 11 --cohort_2 12 -lk 2 -tk 2
+    3. Prune low-frequency paths (must occur at least 2 times) entering Top Side Control:
+       python markov.py markov_sample.csv -s -tgt SC_T -tk 2
+
+    4. Inbound paths to Open Guard Top for a specific demographic:
+       python markov.py markov_sample.csv -s -tgt OG_T --belt Grey --age 11
 """
 
 import sys
@@ -58,12 +87,13 @@ import matplotlib.colors as mcolors
 
 import bjj_core
 
+
 def compute_prob_matrix(df, allowed_states=None, min_incoming_links=0):
     raw_counts = pd.crosstab(df['Source_Resolved'], df['Target_Resolved'], dropna=False)
     all_states = sorted(list(set(df['Source_Resolved']).union(set(df['Target_Resolved']))))
     counts = raw_counts.reindex(index=all_states, columns=all_states, fill_value=0)
 
-    # 1. State/Node-level filtering (-lk)
+    # State/Node-level filtering (-lk)
     if allowed_states is not None:
         valid_states = sorted([s for s in allowed_states if s in counts.index or s in counts.columns])
         counts = counts.reindex(index=valid_states, columns=valid_states, fill_value=0)
@@ -81,6 +111,7 @@ def compute_prob_matrix(df, allowed_states=None, min_incoming_links=0):
     probs = counts.div(row_sums, axis=0).fillna(0.0)
     return probs, counts, all_states
 
+
 def plot_differential_heatmap(delta_p, total_counts=None, min_trans_count=0, label_1="Cohort 1", label_2="Cohort 2"):
     if delta_p.empty:
         print("Warning: Differential matrix is empty; skipping heatmap.")
@@ -88,7 +119,6 @@ def plot_differential_heatmap(delta_p, total_counts=None, min_trans_count=0, lab
 
     display_delta = delta_p.copy()
 
-    # Zero out cells below the transition threshold (-tk)
     if min_trans_count > 0 and total_counts is not None:
         mask = total_counts < min_trans_count
         display_delta[mask] = 0.0
@@ -134,6 +164,7 @@ def plot_differential_heatmap(delta_p, total_counts=None, min_trans_count=0, lab
         plt.show()
     except Exception as e:
         print(f'>>> [Note] GUI window skipped: {e}')
+
 
 def plot_differential_graph(delta_p, total_counts=None, min_trans_count=0, label_1="Cohort 1", label_2="Cohort 2", split_mode=False):
     if delta_p.empty:
@@ -244,18 +275,38 @@ def plot_differential_graph(delta_p, total_counts=None, min_trans_count=0, label
     except Exception as e:
         print(f'>>> [Note] GUI window skipped: {e}')
 
-def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=False, min_trans_count=0):
+
+def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=False, min_trans_count=0, target_state=None):
     if len(all_states) == 0:
         print("Warning: No nodes satisfy the specified threshold.")
         return
 
+    # Filter to predecessor states if target_state is given
+    if target_state:
+        if target_state not in probs.columns:
+            print(f"Error: Target state '{target_state}' not found in the transition records.")
+            return
+        predecessors = [
+            src for src in probs.index 
+            if counts.loc[src, target_state] >= max(1, min_trans_count)
+        ]
+        if not predecessors:
+            print(f"No incoming transitions found for state '{target_state}' satisfying threshold tk >= {min_trans_count}.")
+            return
+        active_nodes = sorted(list(set(predecessors + [target_state])))
+    else:
+        active_nodes = all_states
+
     G = nx.DiGraph()
-    for s in all_states:
+    for s in active_nodes:
         G.add_node(s)
+
     for src in probs.index:
         for tgt in probs.columns:
+            if target_state and tgt != target_state:
+                continue
             c = counts.loc[src, tgt]
-            if c >= max(1, min_trans_count):
+            if c >= max(1, min_trans_count) and src in active_nodes and tgt in active_nodes:
                 G.add_edge(src, tgt, weight=probs.loc[src, tgt], count=c)
 
     fig, ax = plt.subplots(figsize=(14, 9))
@@ -263,7 +314,9 @@ def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=Fals
 
     node_colors = []
     for node in G.nodes():
-        if split_mode:
+        if node == target_state:
+            node_colors.append('#fde047')  # Gold/yellow highlight for chosen target
+        elif split_mode:
             if '_T' in node:
                 node_colors.append('#86efac')
             elif '_B' in node:
@@ -331,12 +384,15 @@ def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=Fals
             zorder=10
         )
 
-    ax.set_title(f'BJJ State Transitions {title_suffix}', fontsize=14, fontweight='bold', pad=15)
+    title_target = f" [Incoming to {target_state}]" if target_state else ""
+    ax.set_title(f'BJJ State Transitions {title_suffix}{title_target}', fontsize=14, fontweight='bold', pad=15)
     ax.axis('off')
     fig.tight_layout()
 
-    out_png = 'bjj_transitions_onesided.png' if 'One-Sided' in title_suffix else (
-        'bjj_transitions_split.png' if split_mode else 'bjj_transitions_unsplit.png'
+    out_png = f'bjj_inbound_{target_state}.png' if target_state else (
+        'bjj_transitions_onesided.png' if 'One-Sided' in title_suffix else (
+            'bjj_transitions_split.png' if split_mode else 'bjj_transitions_unsplit.png'
+        )
     )
     fig.savefig(out_png, dpi=300)
     print(f'>>> Diagram saved to: {out_png}')
@@ -345,6 +401,7 @@ def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=Fals
         plt.show()
     except Exception as e:
         print(f'>>> [Note] GUI window skipped: {e}')
+
 
 def main():
     parser = argparse.ArgumentParser(description='Process BJJ Markov Chain transitions.')
@@ -356,6 +413,8 @@ def main():
                         help='Minimum incoming transition count threshold (n >= lk)')
     parser.add_argument('-tk', '--trans_count', type=int, default=0,
                         help='Minimum transition sample threshold (n >= tk; suppresses edges/cells below tk)')
+    parser.add_argument('--target-state', '-tgt', type=str, default=None,
+                        help='Isolate states transitioning into a specific target state (e.g., -tgt CG_B or -tgt FM_T)')
 
     # Generalized Cohort Differential Flags
     parser.add_argument('--compare-by', type=str, default=None,
@@ -449,14 +508,12 @@ def main():
 
         combined_df = pd.concat([df_1, df_2])
 
-        # Node-Level Qualification (-lk): Filter strictly on incoming links
         if args.link_count > 0:
             inbound_counts = combined_df['Target_Resolved'].value_counts()
             allowed_states = sorted(inbound_counts[inbound_counts >= args.link_count].index.tolist())
         else:
             allowed_states = sorted(list(set(combined_df['Source_Resolved']).union(set(combined_df['Target_Resolved']))))
 
-        # Compute probability and count matrices for both cohorts restricted to qualified states
         p_1, c_1, _ = compute_prob_matrix(df_1, allowed_states=allowed_states)
         p_2, c_2, _ = compute_prob_matrix(df_2, allowed_states=allowed_states)
 
@@ -522,11 +579,31 @@ def main():
     print(f'>>> Processing {len(filtered)} transition records {title_suffix}...')
     analyze_and_plot(
         probs, counts, all_states, title_suffix=title_suffix,
-        split_mode=split_active, min_trans_count=args.trans_count
+        split_mode=split_active, min_trans_count=args.trans_count,
+        target_state=args.target_state
     )
 
-    print('\n--- Transition Probability Matrix ---')
-    print(probs.round(2))
+    if args.target_state:
+        tgt = args.target_state
+        if tgt in probs.columns:
+            inbound_df = pd.DataFrame({
+                'Source State': probs.index,
+                f'P( -> {tgt})': probs[tgt].round(2),
+                'Transitions (n)': counts[tgt]
+            })
+            inbound_df = inbound_df[inbound_df['Transitions (n)'] >= max(1, args.trans_count)]
+            inbound_df = inbound_df.sort_values(by=['Transitions (n)', f'P( -> {tgt})'], ascending=[False, False])
+
+            print(f"\n" + "=" * 60)
+            print(f"INCOMING TRANSITIONS TO: {tgt}")
+            print("=" * 60)
+            print(inbound_df.to_string(index=False))
+        else:
+            print(f"\n[Warning] '{tgt}' was not reached in the active selection.")
+    else:
+        print('\n--- Transition Probability Matrix ---')
+        print(probs.round(2))
+
 
 if __name__ == '__main__':
     main()

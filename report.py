@@ -324,9 +324,59 @@ def print_reports(df, args):
         conv_df = pd.DataFrame(summary_rows)
         conv_df = conv_df.sort_values(by=['Win Rate (%)', 'Bouts Reached'], ascending=[False, False])
         print(conv_df.to_string(index=False))
+
+        
     else:
         print("[Skipped] 'Match ID' column required to compute bout-level conversion.")
 
+   # -------------------------------------------------------------------------
+    # 6. Exit Action Win Conversion Rate
+    # -------------------------------------------------------------------------
+    print("\n" + "=" * 70)
+    print("6. EXIT ACTION WIN CONVERSION RATE (Success Rate by Action Taken)")
+    print("=" * 70)
+
+    inst_col = next((c for c in ['Action Instigator', 'Instigator', 'Action_Instigator'] if c in report_df.columns), None)
+
+    if match_col and 'Exit Action' in report_df.columns:
+        # Exclude administrative transitions and empty strings
+        action_df = report_df[~report_df['Exit Action'].isin(['Time', 'Reset', '', np.nan])].copy()
+
+        # Attribute the action strictly to the athlete who executed it
+        if inst_col:
+            # Keep transitions executed by this specific athlete, or neutral shared actions ('N')
+            action_df = action_df[
+                (action_df[inst_col] == action_df['Athlete_Role']) | 
+                (action_df[inst_col].isin(['N', 'None', '']))
+            ]
+
+        # De-duplicate per athlete per match so repetitive attempts don't inflate bout conversion
+        bout_actions = action_df[[match_col, 'Athlete_Role', 'Exit Action', 'Is_Winner']].drop_duplicates(
+            subset=[match_col, 'Athlete_Role', 'Exit Action']
+        )
+
+        gross_action_counts = action_df['Exit Action'].value_counts()
+
+        action_summary = []
+        for action, group in bout_actions.groupby('Exit Action'):
+            bouts_executed = len(group)
+            wins = int(group['Is_Winner'].sum())
+            losses = bouts_executed - wins
+            win_pct = round((wins / bouts_executed) * 100, 1) if bouts_executed > 0 else 0.0
+            total_executions = int(gross_action_counts.get(action, len(group)))
+
+            action_summary.append({
+                'Exit Action': action,
+                'Total Executions': total_executions,
+                'Bouts Executed': bouts_executed,
+                'Wins': wins,
+                'Losses': losses,
+                'Win Rate (%)': win_pct
+            })
+
+        action_conv_df = pd.DataFrame(action_summary)
+        action_conv_df = action_conv_df.sort_values(by=['Win Rate (%)', 'Bouts Executed'], ascending=[False, False])
+        print(action_conv_df.to_string(index=False))
 
 def main():
     parser = argparse.ArgumentParser(description='Generate Performance Reports from BJJ Match Data.')

@@ -35,7 +35,7 @@ Timestamp In / Out,Primary State,Top Athlete,Substate,Exit Action,Subaction,Acti
 4:00/3:55,St,N,,GPull,,A,,,CG,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
 3:55/2:56,CG,B,,GBreak,,B,,,OG,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
 2:56/2:37,OG,B,,Sweep,,A,2,,OG,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
-2:41/2:37,OG,A,,Gpass,,A,3,,SC,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+2:41/2:37,OG,A,,GPass,,A,3,,SC,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
 2:37/1:56,SC,A,,Scr,,B,,,HG,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
 1:56/0:00,HG,B,,Time,,N,,,End,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
 4:00/3:49,St,N,,BTake,,A,4,1/,BM,6,Max Rolik,,Benjamin Kuci,,Grey,11,Light,A
@@ -58,7 +58,7 @@ Timestamp In / Out,Primary State,Top Athlete,Substate,Exit Action,Subaction,Acti
 4:00/3:49,St,N,,GPull,,A,,,OG,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,Dax Sawyer Looi,Arta,Yellow,11,Light,A
 3:48/3:32,OG,B,,Sweep,,A,2,,HG,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,,,Yellow,11,Light,A
 3:32/1:28,HG,A,,GPass,,A,3,,SC,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,,,Yellow,11,Light,A
-1:28/1:10,SC,A,,KneeOnBelly,,A,2,,SC,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,,,Yellow,11,Light,A
+1:28/1:10,SC,A,,KOBAction,,A,2,,SC,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,,,Yellow,11,Light,A
 1:10/0:44,SC,A,,Scr,,B,,,HG,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,,,Yellow,11,Light,A
 0:44/0:00,HG,A,,Time,,N,,,End,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,,,Yellow,11,Light,A
 4:00/3:55,St,N,,GPull,,B,,1/,HG,11,Felipe Riccioppo Asenjo,Brazil,Nash Daemon James Cook,,Yellow,11,Light,A
@@ -99,7 +99,7 @@ Timestamp In / Out,Primary State,Top Athlete,Substate,Exit Action,Subaction,Acti
 1:21/0:58,OG,B,,Sweep,,A,2,,HG,18,Elias Ireh Kim,,Rivers David Griffiths Ajilo,,Yellow,12,Feather,A
 0:58/0:28,HG,A,,Sub,Armbar,A,,,End,18,Elias Ireh Kim,,Rivers David Griffiths Ajilo,,Yellow,12,Feather,A
 4:00/3:52,St,N,,GPull,,B,,1/,OG,19,Eli Jacoby Lovasco,,Davi Carvalho de Andrade,,Yellow,12,Feather,A
-3:52/3:12,OG,A,,Gpass,,A,2,,SC,19,Eli Jacoby Lovasco,,Davi Carvalho de Andrade,,Yellow,12,Feather,A
+3:52/3:12,OG,A,,GPass,,A,2,,SC,19,Eli Jacoby Lovasco,,Davi Carvalho de Andrade,,Yellow,12,Feather,A
 3:12/2:38,SC,A,,Reset,,N,,,St,19,Eli Jacoby Lovasco,,Davi Carvalho de Andrade,,Yellow,12,Feather,A
 2:38/2:18,St,N,,Takedown,SL,A,2,,SC,19,Eli Jacoby Lovasco,,Davi Carvalho de Andrade,,Yellow,12,Feather,A
 2:18/0:00,SC,A,,Time,,N,,,End,19,Eli Jacoby Lovasco,,Davi Carvalho de Andrade,,Yellow,12,Feather,A
@@ -279,3 +279,20 @@ Timestamp In / Out,Primary State,Top Athlete,Substate,Exit Action,Subaction,Acti
 2:22/2:01,SC,A,,KOBAction,,A,2,,SC,55,Nicolas Miguel Da Silva,,Ronin William Mocock,,Yellow,13,Feather,A
 2:01/1:17,SC,A,KOBSubstate,MTake,,A,4,,FM,55,Nicolas Miguel Da Silva,,Ronin William Mocock,,Yellow,13,Feather,A
 1:17/0:00,FM,A,,Time,,N,,,End,55,Nicolas Miguel Da Silva,,Ronin William Mocock,,Yellow,13,Feather,A
+4:00/3:50,St,N,,Gpull,,B,,,OG,56,Nicolas Miguel Da Silva,,Samuel Sullivan Tarullo,,Yellow,13,Feather,A
+3:50/0:19,OG,A,,GPass,,A,3,,SC,56,Nicolas Miguel Da Silva,,Samuel Sullivan Tarullo,,Yellow,13,Feather,A
+"0:19/0""00",SC,A,,Time,,N,,,End,56,Nicolas Miguel Da Silva,,Samuel Sullivan Tarullo,,Yellow,13,Feather,A
+4:00/3:50,St,N,,Gpull,,A,,,OG,57,Nicolas Miguel Da Silva,,Noah Pinheiro Medici,,Yellow,13,Feather,A
+3:50/2:39,OG,B,,Sweep,,A,2,,OG,57,Nicolas Miguel Da Silva,,Noah Pinheiro Medici,,Yellow,13,Feather,A
+2:39/2:32,OG,A,,GPass,,A,3,,SC,57,Nicolas Miguel Da Silva,,Noah Pinheiro Medici,,Yellow,13,Feather,A
+2:32/2:25,SC,A,,MTake,,A,4,,FM,57,Nicolas Miguel Da Silva,,Noah Pinheiro Medici,,Yellow,13,Feather,A
+2:25/1:50,Fm,A,,Sub,,A,,,End,57,Nicolas Miguel Da Silva,,Noah Pinheiro Medici,,Yellow,13,Feather,A
+4:00/3:26,St,N,,Takedown,,A,2,,BM,58,Drake Au Huynh,,Esa Jesus Redzovic,,Yellow,13,Feather,A
+3:26/3:04,BM,A,,Sub,BowA,A,,,End,58,Drake Au Huynh,,Esa Jesus Redzovic,,Yellow,13,Feather,A
+4:00/3:43,St,N,,Takedown,SL,A,2,,SC,59,Drake Au Huynh,,Armando Rafael De Ricardo Sotoma,,Yellow,13,Feather,A
+3:43/2:56,SC,A,,Scr,,B,,,CG,59,Drake Au Huynh,,Armando Rafael De Ricardo Sotoma,,Yellow,13,Feather,A
+2:56/0:00,CG,B,,Time,,N,,,End,59,Drake Au Huynh,,Armando Rafael De Ricardo Sotoma,,Yellow,13,Feather,A
+4:00/3:26,St,N,,Scr,,N,,,HG,60,Cooper Avery Andress,,Francisco Da Cunha Bueno Filho,,Yellow,13,Feather,A
+3:36/2:05,HG,B,,Sweep,,A,2,/1,HG,60,Cooper Avery Andress,,Francisco Da Cunha Bueno Filho,,Yellow,13,Feather,A
+2:05/1:00,HG,A,,BTake,,A,4,,BM,60,Cooper Avery Andress,,Francisco Da Cunha Bueno Filho,,Yellow,13,Feather,A
+1:00/0:00,BM,A,,Time,,N,,,End,60,Cooper Avery Andress,,Francisco Da Cunha Bueno Filho,,Yellow,13,Feather,A
