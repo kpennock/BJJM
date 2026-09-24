@@ -4,7 +4,8 @@ BJJ Markov Chain Transition Analyzer
 Processes state transitions from BJJ match event logs, computes empirical
 Markov transition probability matrices, and visualizes directed transition graphs.
 Supports canonical unsplit states, perspective-split states (_T / _B), one-sided
-evaluations, cross-cohort differentials (ΔP), and targeted inbound state isolation.
+evaluations, cross-cohort differentials (ΔP), and targeted single-state isolation
+for both inbound (-tgt) and outbound (-src) trajectories.
 
 Usage:
 ------
@@ -15,16 +16,24 @@ Positional Arguments:
     csv_path                 Path to the input CSV file. Defaults to
                              'markov_sample.csv' if omitted.
 
-Inbound State Isolation:
-------------------------
+Targeted State Isolation (Inbound / Outbound):
+----------------------------------------------
+    -src, --source-state <state>
+                             Isolate transitions departing from a specific origin
+                             state (e.g., -src SC_T or -src OG_B).
+                             - Graph: Displays only the source state and all successor
+                               states it transitions into (source node highlighted in cyan).
+                             - Console: Prints a ranked tabular breakdown of outbound
+                               probabilities P(Source -> Target) and counts (n).
+
     -tgt, --target-state <state>
                              Isolate transitions feeding directly into a specific
                              target state (e.g., -tgt BM_T or -tgt CG_B).
                              - Graph: Displays only predecessor states and edges
                                pointing directly into the chosen position (target node
-                               is highlighted in yellow).
-                             - Console: Prints a ranked tabular breakdown showing the
-                               probability P(Source -> Target) and transition volume (n).
+                               highlighted in yellow).
+                             - Console: Prints a ranked tabular breakdown of inbound
+                               probabilities P(Source -> Target) and counts (n).
 
 Differential Comparison Modes:
 ------------------------------
@@ -61,19 +70,19 @@ Metadata Filter Options:
     --win-only               Filter transitions to winning competitors only.
     -h, --help               Display argument help and exit.
 
-Target State & Filtering Examples:
-----------------------------------
-    1. Isolate incoming paths into Bottom Closed Guard (CG_B):
-       python markov.py markov_sample.csv -s -tgt CG_B
+Examples:
+---------
+    1. Isolate all exits out of Top Side Control (SC_T):
+       python markov.py markov_sample.csv -s -src SC_T
 
-    2. Isolate winning paths leading into Top Back Mount (BM_T):
-       python markov.py markov_sample.csv -s -tgt BM_T --win-only
+    2. Isolate winning exits out of Bottom Open Guard (OG_B):
+       python markov.py markov_sample.csv -s -src OG_B --win-only
 
-    3. Prune low-frequency paths (must occur at least 2 times) entering Top Side Control:
-       python markov.py markov_sample.csv -s -tgt SC_T -tk 2
+    3. Isolate incoming paths into Top Back Mount (BM_T):
+       python markov.py markov_sample.csv -s -tgt BM_T
 
-    4. Inbound paths to Open Guard Top for a specific demographic:
-       python markov.py markov_sample.csv -s -tgt OG_T --belt Grey --age 11
+    4. Exits out of Half Guard Top repeated at least 2 times:
+       python markov.py markov_sample.csv -s -src HG_T -tk 2
 """
 
 import sys
@@ -276,7 +285,8 @@ def plot_differential_graph(delta_p, total_counts=None, min_trans_count=0, label
         print(f'>>> [Note] GUI window skipped: {e}')
 
 
-def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=False, min_trans_count=0, target_state=None):
+def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=False,
+                     min_trans_count=0, target_state=None, source_state=None):
     if len(all_states) == 0:
         print("Warning: No nodes satisfy the specified threshold.")
         return
@@ -294,6 +304,19 @@ def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=Fals
             print(f"No incoming transitions found for state '{target_state}' satisfying threshold tk >= {min_trans_count}.")
             return
         active_nodes = sorted(list(set(predecessors + [target_state])))
+    # Filter to successor states if source_state is given
+    elif source_state:
+        if source_state not in probs.index:
+            print(f"Error: Source state '{source_state}' not found in the transition records.")
+            return
+        successors = [
+            tgt for tgt in probs.columns 
+            if counts.loc[source_state, tgt] >= max(1, min_trans_count)
+        ]
+        if not successors:
+            print(f"No outbound transitions found from state '{source_state}' satisfying threshold tk >= {min_trans_count}.")
+            return
+        active_nodes = sorted(list(set([source_state] + successors)))
     else:
         active_nodes = all_states
 
@@ -305,6 +328,8 @@ def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=Fals
         for tgt in probs.columns:
             if target_state and tgt != target_state:
                 continue
+            if source_state and src != source_state:
+                continue
             c = counts.loc[src, tgt]
             if c >= max(1, min_trans_count) and src in active_nodes and tgt in active_nodes:
                 G.add_edge(src, tgt, weight=probs.loc[src, tgt], count=c)
@@ -314,8 +339,10 @@ def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=Fals
 
     node_colors = []
     for node in G.nodes():
-        if node == target_state:
+        if target_state and node == target_state:
             node_colors.append('#fde047')  # Gold/yellow highlight for chosen target
+        elif source_state and node == source_state:
+            node_colors.append('#38bdf8')  # Sky blue highlight for chosen origin
         elif split_mode:
             if '_T' in node:
                 node_colors.append('#86efac')
@@ -384,14 +411,21 @@ def analyze_and_plot(probs, counts, all_states, title_suffix='', split_mode=Fals
             zorder=10
         )
 
-    title_target = f" [Incoming to {target_state}]" if target_state else ""
-    ax.set_title(f'BJJ State Transitions {title_suffix}{title_target}', fontsize=14, fontweight='bold', pad=15)
+    title_iso = ""
+    if target_state:
+        title_iso = f" [Incoming to {target_state}]"
+    elif source_state:
+        title_iso = f" [Outgoing from {source_state}]"
+
+    ax.set_title(f'BJJ State Transitions {title_suffix}{title_iso}', fontsize=14, fontweight='bold', pad=15)
     ax.axis('off')
     fig.tight_layout()
 
     out_png = f'bjj_inbound_{target_state}.png' if target_state else (
-        'bjj_transitions_onesided.png' if 'One-Sided' in title_suffix else (
-            'bjj_transitions_split.png' if split_mode else 'bjj_transitions_unsplit.png'
+        f'bjj_outbound_{source_state}.png' if source_state else (
+            'bjj_transitions_onesided.png' if 'One-Sided' in title_suffix else (
+                'bjj_transitions_split.png' if split_mode else 'bjj_transitions_unsplit.png'
+            )
         )
     )
     fig.savefig(out_png, dpi=300)
@@ -415,6 +449,8 @@ def main():
                         help='Minimum transition sample threshold (n >= tk; suppresses edges/cells below tk)')
     parser.add_argument('--target-state', '-tgt', type=str, default=None,
                         help='Isolate states transitioning into a specific target state (e.g., -tgt CG_B or -tgt FM_T)')
+    parser.add_argument('--source-state', '-src', type=str, default=None,
+                        help='Isolate states transitioning out of a specific origin state (e.g., -src SC_T or -src OG_B)')
 
     # Generalized Cohort Differential Flags
     parser.add_argument('--compare-by', type=str, default=None,
@@ -580,9 +616,10 @@ def main():
     analyze_and_plot(
         probs, counts, all_states, title_suffix=title_suffix,
         split_mode=split_active, min_trans_count=args.trans_count,
-        target_state=args.target_state
+        target_state=args.target_state, source_state=args.source_state
     )
 
+    # Inbound Table Output
     if args.target_state:
         tgt = args.target_state
         if tgt in probs.columns:
@@ -600,6 +637,24 @@ def main():
             print(inbound_df.to_string(index=False))
         else:
             print(f"\n[Warning] '{tgt}' was not reached in the active selection.")
+    # Outbound Table Output
+    elif args.source_state:
+        src = args.source_state
+        if src in probs.index:
+            outbound_df = pd.DataFrame({
+                'Target State': probs.columns,
+                f'P({src} ->)': probs.loc[src].round(2),
+                'Transitions (n)': counts.loc[src]
+            })
+            outbound_df = outbound_df[outbound_df['Transitions (n)'] >= max(1, args.trans_count)]
+            outbound_df = outbound_df.sort_values(by=['Transitions (n)', f'P({src} ->)'], ascending=[False, False])
+
+            print(f"\n" + "=" * 60)
+            print(f"OUTGOING TRANSITIONS FROM: {src}")
+            print("=" * 60)
+            print(outbound_df.to_string(index=False))
+        else:
+            print(f"\n[Warning] '{src}' was not departed from in the active selection.")
     else:
         print('\n--- Transition Probability Matrix ---')
         print(probs.round(2))
