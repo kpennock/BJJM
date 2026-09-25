@@ -1,0 +1,319 @@
+Timestamp In / Out,Primary State,Top Athlete,Substate,Exit Action,Subaction,Action Instigator,Points,Adv/Pen, Next State,Match ID,Name A,Group A,Name B,Group B,Belt,Age,Weight Class,Win
+4:00/3:57,St,N,,DGP,,N,,,50-50,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:57/3:53,50-50,N,,Reset,,N,,-1/-1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:53/3:50,St,N,,DGP,,N,,,50-50,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:50/3:38,50-50,N,,Reset,,N,,-1/1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:38/3:27,St,N,,DGP,,N,,-1/1,50-50,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:27/3:03,50-50,N,,Reset,,N,,-1/-1,St,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:03/3:02,St,N,,DGP,,N,,,CG,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+3:02/2:23,CG,A,,BTake,,A,4,,BM,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+2:23/0:00,BM,A,,Time,,N,,,End,1,Eymen Agah Saygili,Northern Tribe,Tomás Santos Esteves,AOJ,Grey,11,Light,A
+4:00/3:55,St,N,,DGPull,,N,,,50-50,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+3:55/3:23,50-50,N,,Scr,,A,,,HG,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+3:23/2:36,HG,A,,GPass,,A,3,,SC,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+2:26/2:02,SC,A,,Scr,Sub_Driven,B,,,OG,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+2:02/1:50,OG,B,,Sweep,,A,6,,FM,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+1:50/0:46,FM,A,,Sub,BowA,A,,,End,2,Eymen Agah Saygili,Northern Tribe,Nelson James Cox,YType BJJ,Grey,11,Light,A
+4:00/3:40,St,N,,GPull,,B,,,CG,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+3:40/3:00,CG,B,,GBreak,Standing,B,,,OG,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+3:00/2:48,OG,B,,DGP,,N,,,50-50,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+2:48/2:35,50-50,N,,Sweep,,B,2,,HG,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+2:35/2:25,HG,B,,GPass,,B,3,,SC,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+2:25/1:55,SC,B,,Scr,,A,,,HG,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+1:55/0:25,HG,B,,Sweep,,B,6,,FM,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+0:25/0:05,FM,B,,BTake,Gift_wrap,B,4,,BM,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+0:05/0:00,BM,B,,Time,,N,,,End,3,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Tomás Santos Esteves,AOJ,Grey,11,Light,B
+4:00/3:49,St,N,,GPull,,A,,,OG,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+3:49/3:28,OG,B,,Scr,,A,,,St,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+3:31/3:28,St,A,,Takedown,SL,A,2,,SC,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+3:28/2:21,SC,A,,Scr,,B,,,HG,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+2:21/0:54,HG,A,,GPass,,A,3,,SC,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+0:54/0:15,SC,A,,Scr,,B,,,HG,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+0:15/0:10,HG,A,,GPass,,A,3,,SC,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+0:10/0:00,SC,A,,Time,,N,,,End,4,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Anthony James Gambatese,,Grey,11,Light,A
+4:00/3:55,St,N,,GPull,,A,,,CG,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+3:55/2:56,CG,B,,GBreak,,B,,,OG,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+2:56/2:37,OG,B,,Sweep,,A,2,,OG,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+2:41/2:37,OG,A,,GPass,,A,3,,SC,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+2:37/1:56,SC,A,,Scr,,B,,,HG,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+1:56/0:00,HG,B,,Time,,N,,,End,5,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Benjamin Kuci,,Grey,11,Light,A
+4:00/3:49,St,N,,BTake,,A,4,1/,BM,6,Max Rolik,,Benjamin Kuci,,Grey,11,Light,A
+3:49/3:33,BM,A,,Scr,,B,,,CG,6,Max Rolik,,Benjamin Kuci,,Grey,11,Light,A
+3:33/3:11,CG,B,Spider,Sub,Armbar,A,,,End,6,Max Rolik,,Benjamin Kuci,,Grey,11,Light,A
+4:00/3:49,St,N,,DGP,,N,,,50-50,7,Davis Jackson Newton,,Nelson James Cox,,Grey,11,Light,B
+3:49/3:22,50-50,N,,Reset,,N,,-2/-1,St,7,Davis Jackson Newton,,Nelson James Cox,,Grey,11,Light,B
+3:22/3:13,St,N,,DGP,,N,,,50-50,7,Davis Jackson Newton,,Nelson James Cox,,Grey,11,Light,B
+3:13/2:46,50-50,N,,Sweep,,B,2,-1/-1,St,7,Davis Jackson Newton,,Nelson James Cox,,Grey,11,Light,B
+2:46/2:31,St,N,,Takedown,SL,A,2,,CG,7,Davis Jackson Newton,,Nelson James Cox,,Grey,11,Light,B
+2:31/0:00,CG,A,,Time,,N,,,End,7,Davis Jackson Newton,,Nelson James Cox,,Grey,11,Light,B
+4:00/3:55,St,N,,GPull,,B,,,OG,8,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Cameron M. Kaldon,,Grey,11,Light,A
+3:55/3:05,OG,B,,Sweep,,A,2,,OG,8,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Cameron M. Kaldon,,Grey,11,Light,A
+3:05/2:38,OG,A,,GuardClose,,B,,,CG,8,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Cameron M. Kaldon,,Grey,11,Light,A
+2:38/0:00,CG,A,,Time,,N,,,End,8,Brett Raymond Witt,Black Tie Brazilian Jiu-Jitsu,Cameron M. Kaldon,,Grey,11,Light,A
+4:00/3:49,St,N,,GPull,,B,,,CG,9,João Pedro Macedo Martins,White House Jiu-Jitsu School,Felipe Riccioppo Asenjo,Brazil,Yellow,11,Light,A
+3:49/2:51,CG,A,,GBreak,,A,,,OG,9,João Pedro Macedo Martins,White House Jiu-Jitsu School,Felipe Riccioppo Asenjo,Brazil,Yellow,11,Light,A
+2:51/0:56,OG,A,,BTake,Scr,A,4,,BM,9,João Pedro Macedo Martins,White House Jiu-Jitsu School,Felipe Riccioppo Asenjo,Brazil,Yellow,11,Light,A
+0:56/0:32,BM,A,,Sub,RNC,A,,,End,9,João Pedro Macedo Martins,White House Jiu-Jitsu School,Felipe Riccioppo Asenjo,Brazil,Yellow,11,Light,A
+4:00/3:49,St,N,,GPull,,A,,,OG,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,Dax Sawyer Looi,Arta,Yellow,11,Light,A
+3:48/3:32,OG,B,,Sweep,,A,2,,HG,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,,,Yellow,11,Light,A
+3:32/1:28,HG,A,,GPass,,A,3,,SC,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,,,Yellow,11,Light,A
+1:28/1:10,SC,A,,KOBAction,,A,2,,SC,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,,,Yellow,11,Light,A
+1:10/0:44,SC,A,,Scr,,B,,,HG,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,,,Yellow,11,Light,A
+0:44/0:00,HG,A,,Time,,N,,,End,10,João Pedro Macedo Martins,White House Jiu-Jitsu School,,,Yellow,11,Light,A
+4:00/3:55,St,N,,GPull,,B,,1/,HG,11,Felipe Riccioppo Asenjo,Brazil,Nash Daemon James Cook,,Yellow,11,Light,A
+3:55/2:45,HG,A,,BTake,,A,4,,BM,11,Felipe Riccioppo Asenjo,Brazil,Nash Daemon James Cook,,Yellow,11,Light,A
+2:45/1:47,BM,A,,Sub,RNC,A,,,End,11,Felipe Riccioppo Asenjo,Brazil,Nash Daemon James Cook,,Yellow,11,Light,A
+4:00/3:55,St,N,,GPull,,B,,,CG,12,Dax Sawyer Looi,Arta,Urijah Christopher Schabowsky,,Yellow,11,Light,A
+3:55/2:57,CG,A,,GPass,,A,2,,SC,12,Dax Sawyer Looi,Arta,Urijah Christopher Schabowsky,,Yellow,11,Light,A
+2:57/2:42,SC,A,,MTake,Sub_Driven,A,4,,FM,12,Dax Sawyer Looi,Arta,Urijah Christopher Schabowsky,,Yellow,11,Light,A
+2:42/1:26,FM,A,Hooks,Sub,Armbar,A,,,End,12,Dax Sawyer Looi,Arta,Urijah Christopher Schabowsky,,Yellow,11,Light,A
+4:00/3:45,St,N,,Takedown,,B,2,,CG,13,Dax Sawyer Looi,Arta,Micah Brave,,Yellow,11,Light,A
+3:45/3:30,CG,B,,GBreak,,B, ,,OG,13,Dax Sawyer Looi,Arta,Micah Brave,,Yellow,11,Light,A
+3:30/3:20,OG,B,,Takedown,,A,2,,OG,13,Dax Sawyer Looi,Arta,Micah Brave,,Yellow,11,Light,A
+3:20/2:50,OG,A,,GPass,,A,3,,SC,13,Dax Sawyer Looi,Arta,Micah Brave,,Yellow,11,Light,A
+2:50/0:09,SC,A,,Sub,,A,,,End,13,Dax Sawyer Looi,Arta,Micah Brave,,Yellow,11,Light,A
+4:00/3:58,St,N,,GPull,,B,,,OG,14,Nash Daemon James Cook,,Cash Daniels Fine,,Yellow,11,Light,A
+3:58/3:41,OG,A,,Scr,,B,,,CG,14,Nash Daemon James Cook,,Cash Daniels Fine,,Yellow,11,Light,A
+3:41/2:50,CG,A,,GBreak,,A,,1/,OG,14,Nash Daemon James Cook,,Cash Daniels Fine,,Yellow,11,Light,A
+2:50/0:00,OG,A,,Time,,,,,End,14,Nash Daemon James Cook,,Cash Daniels Fine,,Yellow,11,Light,A
+4:00/3:58,St,N,,GPull,,A,,,CG,15,Talus Gary Edmund McCaughen,,Jordan Anthony Gallow,,Yellow,11,Light,A
+3:58/3:18,CG,B,,Sub,Armbar,A,,,End,15,Talus Gary Edmund McCaughen,,Jordan Anthony Gallow,,Yellow,11,Light,A
+4:00/3:00,St,N,,SL,,B,2,,CG,16,Elias Ireh Kim,,Eli Jacoby Lovasco,,Yellow,12,Feather,A
+3:00/2:40,CG,B,,GOpen,,A,,,OG,16,Elias Ireh Kim,,Eli Jacoby Lovasco,,Yellow,12,Feather,A
+2:40/0:21,OG,B,,Sweep,,A,2,3/,SC,16,Elias Ireh Kim,,Eli Jacoby Lovasco,,Yellow,12,Feather,A
+0:21/0:00,SC,A,,Time,,N,,,End,16,Elias Ireh Kim,,Eli Jacoby Lovasco,,Yellow,12,Feather,A
+4:00/3:53,St,N,,DGP,,N,,,50-50,17,Elias Ireh Kim,,Lorenzo Augusto Fonseca de Faria,,Yellow,12,Feather,A
+3:53/3:27,50-50,N,,Reset,,N,,-1/-1,St,17,Elias Ireh Kim,,Lorenzo Augusto Fonseca de Faria,,Yellow,12,Feather,A
+3:27/3:21,St,N,,GPull,,A,,,CG,17,Elias Ireh Kim,,Lorenzo Augusto Fonseca de Faria,,Yellow,12,Feather,A
+3:21/0:19,CG,B,,GOpen,,A,,,OG,17,Elias Ireh Kim,,Lorenzo Augusto Fonseca de Faria,,Yellow,12,Feather,A
+0:19/0:00,OG,B,,Time,,N,,,End,17,Elias Ireh Kim,,Lorenzo Augusto Fonseca de Faria,,Yellow,12,Feather,A
+4:00/3:55,St,N,,GPull,,B,2,,CG,18,Elias Ireh Kim,,Rivers David Griffiths Ajilo,,Yellow,12,Feather,A
+3:55/3:18,CG,B,,GOpen,,A,,1/,OG,18,Elias Ireh Kim,,Rivers David Griffiths Ajilo,,Yellow,12,Feather,A
+3:18/3:02,OG,B,,Sweep,,A,2,,SC,18,Elias Ireh Kim,,Rivers David Griffiths Ajilo,,Yellow,12,Feather,A
+3:02/2:45,SC,A,,Reset,,N,,,St,18,Elias Ireh Kim,,Rivers David Griffiths Ajilo,,Yellow,12,Feather,A
+2:45/2:30,St,N,,GPull,,A,,-1/,CG,18,Elias Ireh Kim,,Rivers David Griffiths Ajilo,,Yellow,12,Feather,A
+2:30/2:22,CG,B,,GOpen,,A,,,OG,18,Elias Ireh Kim,,Rivers David Griffiths Ajilo,,Yellow,12,Feather,A
+2:22/1:54,OG,B,,Sweep,,A,2,,SC,18,Elias Ireh Kim,,Rivers David Griffiths Ajilo,,Yellow,12,Feather,A
+1:54/1:21,SC,A,,Sweep,,B,2,,OG,18,Elias Ireh Kim,,Rivers David Griffiths Ajilo,,Yellow,12,Feather,A
+1:21/0:58,OG,B,,Sweep,,A,2,,HG,18,Elias Ireh Kim,,Rivers David Griffiths Ajilo,,Yellow,12,Feather,A
+0:58/0:28,HG,A,,Sub,Armbar,A,,,End,18,Elias Ireh Kim,,Rivers David Griffiths Ajilo,,Yellow,12,Feather,A
+4:00/3:52,St,N,,GPull,,B,,1/,OG,19,Eli Jacoby Lovasco,,Davi Carvalho de Andrade,,Yellow,12,Feather,A
+3:52/3:12,OG,A,,GPass,,A,2,,SC,19,Eli Jacoby Lovasco,,Davi Carvalho de Andrade,,Yellow,12,Feather,A
+3:12/2:38,SC,A,,Reset,,N,,,St,19,Eli Jacoby Lovasco,,Davi Carvalho de Andrade,,Yellow,12,Feather,A
+2:38/2:18,St,N,,Takedown,SL,A,2,,SC,19,Eli Jacoby Lovasco,,Davi Carvalho de Andrade,,Yellow,12,Feather,A
+2:18/0:00,SC,A,,Time,,N,,,End,19,Eli Jacoby Lovasco,,Davi Carvalho de Andrade,,Yellow,12,Feather,A
+4:00/3:50,St,N,,GPull,,B,,,OG,20,Eli Jacoby Lovasco,,Bentley Otto Leskovec,,Yellow,12,Feather,A
+3:50/3:28,OG,A,,GPass,,A,3,,SC,20,Eli Jacoby Lovasco,,Bentley Otto Leskovec,,Yellow,12,Feather,A
+3:38/2:55,SC,A,,BTake,Sub_Driven,A,4,,BM,20,Eli Jacoby Lovasco,,Bentley Otto Leskovec,,Yellow,12,Feather,A
+2:55/2:17,BM,A,,Sub,RNC,A,,,End,20,Eli Jacoby Lovasco,,Bentley Otto Leskovec,,Yellow,12,Feather,A
+4:00/3:51,St,N,,GPull,,A,,,OG,21,Lorenzo Augusto Fonseca de Faria,,Knox Gregory Marks,,Yellow,12,Feather,A
+3:51/3:31,OG,B,,Sweep,,A,2,,OG,21,Lorenzo Augusto Fonseca de Faria,,Knox Gregory Marks,,Yellow,12,Feather,A
+3:31/2:52,OG,A,,GPull,,B,,,CG,21,Lorenzo Augusto Fonseca de Faria,,Knox Gregory Marks,,Yellow,12,Feather,A
+2:52/2:23,CG,A,,GBreak,,A,,,St,21,Lorenzo Augusto Fonseca de Faria,,Knox Gregory Marks,,Yellow,12,Feather,A
+2:23/1:52,St,N,,Sub,Triangle,A,,,End,21,Lorenzo Augusto Fonseca de Faria,,Knox Gregory Marks,,Yellow,12,Feather,A
+4:00/3:57,St,N,,GPull,,B,,,OG,22,Rivers David Griffiths Ajilo,,Matias Fernandez Paredes,,Yellow,12,Feather,A
+3:57/3:54,OG,A,,Sweep,,B,2,,OG,22,Rivers David Griffiths Ajilo,,Matias Fernandez Paredes,,Yellow,12,Feather,A
+3:54/2:31,OG,B,,Sweep,,A,2,,OG,22,Rivers David Griffiths Ajilo,,Matias Fernandez Paredes,,Yellow,12,Feather,A
+2:31/0:00,OG,A,,Time,,N,,,End,22,Rivers David Griffiths Ajilo,,Matias Fernandez Paredes,,Yellow,12,Feather,A
+4:00/3:55,St,N,,GPull,,A,,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+3:55/3:43,OG,B,,Sweep,,A,2,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+3:43/3:22,OG,A,,Sweep,,B,2,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+3:22/3:07,OG,B,,Sweep,,A,2,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+3:07/1:52,OG,A,,Sweep,,A,2,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+1:52/1:40,OG,A,,Scr,,N,,/1,St,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+1:40/1:23,St,N,,GPull,,B,,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+1:23/0:47,OG,A,,Scr,,N,,,St,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+0:47/0:36,St,N,,GPull,,B,,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+0:36/0:27,OG,A,,Scr,,N,,,St,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+0:27/0:17,St,N,,Takedown,DL,B,2,,OG,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+0:17/0:00,OG,B,,Time,,N,,,End,23,Eymen Agah Saygili,Northern Tribe,Khaled Salazar,,Grey,11,Light,A
+4:00/3:48,St,N,,GPull,,A,,,CG,24,Davi Carvalho de Andrade,,Antonio Puno,,Yellow,12,Feather,A
+3:48/3:08,CG,A,,Sub,Armbar,A,,,End,24,Davi Carvalho de Andrade,,Antonio Puno,,Yellow,12,Feather,A
+4:00/3:48,St,N,,GPull,,A,,,OG,25,Ayub Shuhrat Ogli Umar,,Max Leyva,,Yellow,12,Feather,A
+3:38/3:25,OG,B,,Sweep,,A,2,,OG,25,Ayub Shuhrat Ogli Umar,,Max Leyva,,Yellow,12,Feather,A
+3:25/1:10,OG,A,,BTake,Scr,A,4,2/,BM,25,Ayub Shuhrat Ogli Umar,,Max Leyva,,Yellow,12,Feather,A
+1:10/1:07,BM,A,,Sub,RNC,A,,,End,25,Ayub Shuhrat Ogli Umar,,Max Leyva,,Yellow,12,Feather,A
+4:00/3:58,St,N,,GPull,,A,,,OG,26,Tomás Santos Esteves,,Evan Gray Patterson,,Grey,11,Light,A
+3:58/3:35,OG,B,,GuardClose,,A,,,CG,26,Tomás Santos Esteves,,Evan Gray Patterson,,Grey,11,Light,A
+3:35/2:48,CG,B,,Sub,Armbar,A,,,End,26,Tomás Santos Esteves,,Evan Gray Patterson,,Grey,11,Light,A
+4:00/3:53,St,N,,GPull,,B,,,OG,27,Evan Gray Patterson,,Grayson Mitchell Chpman,,Grey,11,Light,A
+3:53/3:11,OG,A,,Scr,,B,,/2,St,27,Evan Gray Patterson,,Grayson Mitchell Chpman,,Grey,11,Light,A
+3:11/3:03,St,N,,GPull,,B,,,OG,27,Evan Gray Patterson,,Grayson Mitchell Chpman,,Grey,11,Light,A
+3:03/2:33,OG,A,,GPass,,A,7,,FM,27,Evan Gray Patterson,,Grayson Mitchell Chpman,,Grey,11,Light,A
+2:33/2:30,FM,A,,Sub,Armbar,A,,,End,27,Evan Gray Patterson,,Grayson Mitchell Chpman,,Grey,11,Light,A
+4:00/3:53,St,N,,Takedown,GPull,B,2,,OG,28,Bentley Otto Leskovec,,Lukas Ryan Hopkins,,Yellow,12,Feather,A
+3:53/3:25,OG,B,,BTake,,A,4,,BM,28,Bentley Otto Leskovec,,Lukas Ryan Hopkins,,Yellow,12,Feather,A
+3:25/0:11,BM,A,,Sub,RNC,A,,,End,28,Bentley Otto Leskovec,,Lukas Ryan Hopkins,,Yellow,12,Feather,A
+4:00/3:39,St,N,,Sub,Armbar,A,,,End,29,Jace Jared Tan,,Maximus Prime Cooperman,,Yellow,11,Middle,A
+4:00/3:52,St,N,,DGP,,N,,,50-50,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+3:52/3:35,50-50,N,,Reset,,N,,-1/-1,St,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+3:35/3:20,St,N,,DGP,,N,,,OG,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+3:20/2:46,OG,A,,Scr,,A,,,HG,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+2:46/2:11,HG,A,,GPass,,A,3,2/,SC,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+2:11/1:54,SC,A,,Scr,,B,,,HG,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+1:54/1:40,HG,A,,Sweep,,B,2,,CG,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+1:40/1:00,CG,B,,Sweep,,A,2,,SC,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+1:00/0:52,SC,A,,BTake,Scr,A,4,,BM,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+0:52/0:33,BM,A,,Reset,,A,2,,St,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+0:33/0:20,St,N,,GPull,,A,,,OG,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+0:20/0:00,OG,B,,Time,,N,,,End,30,Davi Oliveira Barreto,,Jace Jared Tan,,Yellow,11,Middle,A
+4:00/3:54,St,N,,DGP,,N,,,50-50,31,Davi Oliveira Barreto,,Emiliano Cruz Rodriguez,,Yellow,11,Middle,A
+3:54/3:32,50-50,N,,Scr,,N,,1/1,OG,31,Davi Oliveira Barreto,,Emiliano Cruz Rodriguez,,Yellow,11,Middle,A
+3:32/2:52,OG,B,,Sweep,,A,2,,OG,31,Davi Oliveira Barreto,,Emiliano Cruz Rodriguez,,Yellow,11,Middle,A
+2:52/2:36,OG,A,,GPass,,A,3,,SC,31,Davi Oliveira Barreto,,Emiliano Cruz Rodriguez,,Yellow,11,Middle,A
+2:36/1:53,SC,A,,MTake,,A,4,,FM,31,Davi Oliveira Barreto,,Emiliano Cruz Rodriguez,,Yellow,11,Middle,A
+1:53/1:16,FM,A,,Sub,Armbar,A,,,End,31,Davi Oliveira Barreto,,Emiliano Cruz Rodriguez,,Yellow,11,Middle,A
+4:00/3:52,St,N,,GPull,,A,,,OG,32,Davi Oliveira Barreto,,Gabriel Beltran Arantegui,,Yellow,11,Middle,A
+3:52/3:30,OG,B,,Sweep,,A,2,,OG,32,Davi Oliveira Barreto,,Gabriel Beltran Arantegui,,Yellow,11,Middle,A
+3:30/3:08,OG,A,,GPass,,A,3,,SC,32,Davi Oliveira Barreto,,Gabriel Beltran Arantegui,,Yellow,11,Middle,A
+3:08/2:54,SC,A,,MTake,,A,4,,FM,32,Davi Oliveira Barreto,,Gabriel Beltran Arantegui,,Yellow,11,Middle,A
+2:54/2:21,FM,A,,Sub,BowA,A,,,End,32,Davi Oliveira Barreto,,Gabriel Beltran Arantegui,,Yellow,11,Middle,A
+4:00/3:50,St,N,,GPull,,A,,-1/,OG,33,Emiliano Cruz Rodriguez,,Cairo Kahn Lacombe,,Yellow,11,Middle,A
+3:50/3:41,OG,B,,GClose,,A,,,CG,33,Emiliano Cruz Rodriguez,,Cairo Kahn Lacombe,,Yellow,11,Middle,A
+3:41/0:05,CG,B,,Sweep,,A,2,,FM,33,Emiliano Cruz Rodriguez,,Cairo Kahn Lacombe,,Yellow,11,Middle,A
+0:05/0:00,FM,A,,Time,,N,,,End,33,Emiliano Cruz Rodriguez,,Cairo Kahn Lacombe,,Yellow,11,Middle,A
+4:00/3:53,St,N,,GPull,,A,,,CG,34,Jace Jared Tan,,Eleazar Andres Gomez Rincon,,Yellow,11,Middle,A
+3:50/3:17,CG,B,,Sub,CollarChoke,A,,,End,34,Jace Jared Tan,,Eleazar Andres Gomez Rincon,,Yellow,11,Middle,A
+4:00/3:54,St,N,,GPull,,A,,,CG,35,Tomás Santos Esteves,,Timofey Frolov,,Grey,11,Light,A
+3:58/2:49,CG,B,,Sub,Kimura,A,,,End,35,Tomás Santos Esteves,,Timofey Frolov,,Grey,11,Light,A
+4:00/3:54,St,N,,GPull,,A,,,OG,36,Nelson James Cox,,Adrian Cesar Hernandez,,Grey,11,Light,A
+3:54/1:27,OG,B,,Sub,Triangle,A,,,End,36,Nelson James Cox,,Adrian Cesar Hernandez,,Grey,11,Light,A
+4:00/3:54,St,N,,GPull,,A,,,OG,37,Samuel Alejando Lara Mares,,Renato Matias Uribe Villavicenci,,Grey,11,Light,A
+3:54/2:39,OG,B,,Sweep,,A,2,1/,CG,37,Samuel Alejando Lara Mares,,Renato Matias Uribe Villavicenci,,Grey,11,Light,A
+2:39/2:30,CG,A,,GBreak,,A,,,OG,37,Samuel Alejando Lara Mares,,Renato Matias Uribe Villavicenci,,Grey,11,Light,A
+2:30/2:11,OG,A,,Scr,,N,,,St,37,Samuel Alejando Lara Mares,,Renato Matias Uribe Villavicenci,,Grey,11,Light,A
+2:11/2:09,St,N,,GPull,,A,,,OG,37,Samuel Alejando Lara Mares,,Renato Matias Uribe Villavicenci,,Grey,11,Light,A
+2:09/1:54,OG,B,,GClose,,A,,/2,CG,37,Samuel Alejando Lara Mares,,Renato Matias Uribe Villavicenci,,Grey,11,Light,A
+1:54/0:57,CG,B,,Scr,TSL,A,,/1,St,37,Samuel Alejando Lara Mares,,Renato Matias Uribe Villavicenci,,Grey,11,Light,A
+0:57/0:47,St,N,,GPull,,A,,,OG,37,Samuel Alejando Lara Mares,,Renato Matias Uribe Villavicenci,,Grey,11,Light,A
+0:47/0:18,OG,B,,Sub,Armbar,A,,,End,37,Samuel Alejando Lara Mares,,Renato Matias Uribe Villavicenci,,Grey,11,Light,A
+4:00/3:37,St,N,,Takedown,SL,A,2,/-1,OG,38,Eymen Agah Saygili,,Samuel Alejando Lara Mares,,Grey,11,Light,A
+3:37/3:09,OG,A,,GPass,,A,3,,SC,38,Eymen Agah Saygili,,Samuel Alejando Lara Mares,,Grey,11,Light,A
+3:09/2:33,SC,A,NS,MTake,Scr,A,4,,FM,38,Eymen Agah Saygili,,Samuel Alejando Lara Mares,,Grey,11,Light,A
+2:33/2:06,FM,A,,Sub,Armbar,A,,,End,38,Eymen Agah Saygili,,Samuel Alejando Lara Mares,,Grey,11,Light,A
+4:00/3:57,St,N,,DGP,,N,,,OG,39,Davis Jackson Newton,,jackson Garry Smith,,Grey,11,Light,A
+3:57/3:41,OG,B,,Sub,Kimura,A,,,End,39,Davis Jackson Newton,,jackson Garry Smith,,Grey,11,Light,A
+4:00/3:55,St,N,,DGP,,N,,,OG,40,John Thor Sciarra,,Jalan Matthew C Sagala,,Grey,11,Feather,A
+3:55/3:26,OG,B,,Sweep,SL,A,2,,CG,40,John Thor Sciarra,,Jalan Matthew C Sagala,,Grey,11,Feather,A
+3:26/3:11,CG,A,,Reset,,N,,-1/1,St,40,John Thor Sciarra,,Jalan Matthew C Sagala,,Grey,11,Feather,A
+3:11/3:09,St,N,,GPull,,A,,,OG,40,John Thor Sciarra,,Jalan Matthew C Sagala,,Grey,11,Feather,A
+3:09/3:00,OG,B,,Sweep,,A,2,,OG,40,John Thor Sciarra,,Jalan Matthew C Sagala,,Grey,11,Feather,A
+3:00/2:57,OG,A,,GClose,,B,,,CG,40,John Thor Sciarra,,Jalan Matthew C Sagala,,Grey,11,Feather,A
+2:57/0:00,CG,A,,Time,,N,,,End,40,John Thor Sciarra,,Jalan Matthew C Sagala,,Grey,11,Feather,A
+4:00/3:55,St,N,,DGP,,N,,,50-50,41,John Thor Sciarra,,Evan Elijah Estacio-Bryers,,Grey,11,Feather,A
+3:55/3:22,50-50,N,,Reset,,N,,-1/-1,St,41,John Thor Sciarra,,Evan Elijah Estacio-Bryers,,Grey,11,Feather,A
+3:22/3:16,St,N,,Takedown,Pull,B,2,,OG,41,John Thor Sciarra,,Evan Elijah Estacio-Bryers,,Grey,11,Feather,A
+3:16/2:37,OG,B,,Sweep,SL,A,2,,OG,41,John Thor Sciarra,,Evan Elijah Estacio-Bryers,,Grey,11,Feather,A
+2:37/1:38,OG,A,,BTake,,A,4,,BM,41,John Thor Sciarra,,Evan Elijah Estacio-Bryers,,Grey,11,Feather,A
+1:38/1:37,BM,A,,Sub,RNC,A,,,End,41,John Thor Sciarra,,Evan Elijah Estacio-Bryers,,Grey,11,Feather,A
+4:00/3:55,St,N,,DGP,,N,,,OG,42,John Thor Sciarra,,Omar Abdulwaheed Khan,,Grey,11,Feather,A
+3:55/3:44,OG,B,,Sweep,,A,2,,SC,42,John Thor Sciarra,,Omar Abdulwaheed Khan,,Grey,11,Feather,A
+3:44/3:29,SC,A,,Sub,Armbar,A,,,End,42,John Thor Sciarra,,Omar Abdulwaheed Khan,,Grey,11,Feather,A
+4:00/3:56,St,N,,DGP,,N,,,50-50,43,John Thor Sciarra,,Greyson Roupp,,Grey,11,Feather,A
+3:56/3:32,50-50,N,,GPass,,A,3,,SC,43,John Thor Sciarra,,Greyson Roupp,,Grey,11,Feather,A
+3:32/3:03,SC,A,,Scr,,B,,,HG,43,John Thor Sciarra,,Greyson Roupp,,Grey,11,Feather,A
+3:03/1:39,HG,A,,Scr,,B,,1/,CG,43,John Thor Sciarra,,Greyson Roupp,,Grey,11,Feather,A
+1:39/1:18,CG,B,,Sub,Kimura,A,,1/,End,43,John Thor Sciarra,,Greyson Roupp,,Grey,11,Feather,A
+4:00/3:56,St,N,,GPull,,B,,,OG,44,Jalan Matthew C Sagala,,Bernado De Paiva Coutinho,,Grey,11,Feather,A
+3:56/3:38,OG,A,,Sweep,,B,2,,OG,44,Jalan Matthew C Sagala,,Bernado De Paiva Coutinho,,Grey,11,Feather,A
+3:38/3:31,OG,B,,Sub,Armbar,A,,,End,44,Jalan Matthew C Sagala,,Bernado De Paiva Coutinho,,Grey,11,Feather,A
+4:00/3:56,St,N,,DGP,,N,,1/,OG,45,Jalan Matthew C Sagala,,John Bedford Blackburn IV,,Grey,11,Feather,A
+3:56/3:12,OG,A,,Sweep,,B,2,,OG,45,Jalan Matthew C Sagala,,John Bedford Blackburn IV,,Grey,11,Feather,A
+3:12/3:01,OG,B,,Scr,,N,,,St,45,Jalan Matthew C Sagala,,John Bedford Blackburn IV,,Grey,11,Feather,A
+3:01/2:48,St,N,,GPull,,A,,,CG,45,Jalan Matthew C Sagala,,John Bedford Blackburn IV,,Grey,11,Feather,A
+2:48/2:21,CG,B,,Scr,,N,,,OG,45,Jalan Matthew C Sagala,,John Bedford Blackburn IV,,Grey,11,Feather,A
+2:21/2:16,OG,B,,Reset,,N,,1/,St,45,Jalan Matthew C Sagala,,John Bedford Blackburn IV,,Grey,11,Feather,A
+2:16/2:10,St,N,,DPG,,N,,,OG,45,Jalan Matthew C Sagala,,John Bedford Blackburn IV,,Grey,11,Feather,A
+2:10/1:17,OG,A,,GPass,,A,2,3/1,SC,45,Jalan Matthew C Sagala,,John Bedford Blackburn IV,,Grey,11,Feather,A
+1:17/1:07,SC,A,,Reset,,N,,,St,45,Jalan Matthew C Sagala,,John Bedford Blackburn IV,,Grey,11,Feather,A
+1:07/0:59,St,N,,Takedown,Pull,B,2,,OG,45,Jalan Matthew C Sagala,,John Bedford Blackburn IV,,Grey,11,Feather,A
+0:59/0:41,OG,B,,Sub,Armbar,A,,,End,45,Jalan Matthew C Sagala,,John Bedford Blackburn IV,,Grey,11,Feather,A
+4:00/3:53,St,N,,GPull,,B,,,OG,46,Jalan Matthew C Sagala,,Roman Cade Zalamea,,Grey,11,Feather,A
+3:53/3:31,OG,A,,Sweep,,B,2,,CG,46,Jalan Matthew C Sagala,,Roman Cade Zalamea,,Grey,11,Feather,A
+3:31/2:41,CG,B,,Sweep,,A,2,,SC,46,Jalan Matthew C Sagala,,Roman Cade Zalamea,,Grey,11,Feather,A
+2:41/2:21,SC,A,Back,BTake,Scr,A,4,,BM,46,Jalan Matthew C Sagala,,Roman Cade Zalamea,,Grey,11,Feather,A
+2:21/1:31,BM,A,,Sub,BowA,A,,1/,End,46,Jalan Matthew C Sagala,,Roman Cade Zalamea,,Grey,11,Feather,A
+4:00/3:53,St,N,,GPull,,A,,,OG,47,Jalan Matthew C Sagala,,Kaito Nakajima,,Grey,11,Feather,A
+3:53/3:32,OG,B,,GClose,,A,,,CG,47,Jalan Matthew C Sagala,,Kaito Nakajima,,Grey,11,Feather,A
+3:32/2:56,CG,B,,Sub,Armbar,A,,,End,47,Jalan Matthew C Sagala,,Kaito Nakajima,,Grey,11,Feather,A
+4:00/3:57,St,N,,GPull,,A,,,OG,48,Bernado De Paiva Coutinho,,Xavier Daniel Villarante,,Grey,11,Feather,A
+3:57/3:49,OG,B,,GClose,,A,,,CG,48,Bernado De Paiva Coutinho,,Xavier Daniel Villarante,,Grey,11,Feather,A
+3:49/1:03,CG,B,,Sub,Kimura,A,,,End,48,Bernado De Paiva Coutinho,,Xavier Daniel Villarante,,Grey,11,Feather,A
+4:00/3:53,St,N,,GPull,,A,,,OG,49,Evan Elijah Estacio-Bryers,,William Dozier Rice,,Grey,11,Feather,A
+3:53/3:34,OG,B,,Sub,,A,,,End,49,Evan Elijah Estacio-Bryers,,William Dozier Rice,,Grey,11,Feather,A
+4:00/3:53,St,N,,DGP,,N,,-1/-1,50-50,50,Evan Elijah Estacio-Bryers,,Cameron Yutaka Hoashi,,Grey,11,Feather,A
+3:53/3:52,50-50,N,,Reset,,N,,,St,50,Evan Elijah Estacio-Bryers,,Cameron Yutaka Hoashi,,Grey,11,Feather,A
+3:52/3:45,St,N,,DGP,,N,,,50-50,50,Evan Elijah Estacio-Bryers,,Cameron Yutaka Hoashi,,Grey,11,Feather,A
+3:35/3:27,50-50,N,,Sweep,,A,2,,OG,50,Evan Elijah Estacio-Bryers,,Cameron Yutaka Hoashi,,Grey,11,Feather,A
+3:27/3:18,OG,A,,Reset,,N,,1/,St,50,Evan Elijah Estacio-Bryers,,Cameron Yutaka Hoashi,,Grey,11,Feather,A
+3:18/3:02,St,N,,GPull,,A,,,CG,50,Evan Elijah Estacio-Bryers,,Cameron Yutaka Hoashi,,Grey,11,Feather,A
+3:02/2:02,CG,B,,Sub,Armbar,A,,,End,50,Evan Elijah Estacio-Bryers,,Cameron Yutaka Hoashi,,Grey,11,Feather,A
+4:00/3:44,St,N,,GPull,,A,,,OG,51,Aiden Jian Wang,,Nicolas Miguel Da Silva,,Yellow,13,Feather,A
+3:44/2:48,OG,B,,Sweep,,A,2,1/,OG,51,Aiden Jian Wang,,Nicolas Miguel Da Silva,,Yellow,13,Feather,A
+2:48/1:35,OG,A,,GClose,,B,,,CG,51,Aiden Jian Wang,,Nicolas Miguel Da Silva,,Yellow,13,Feather,A
+1:35/0:55,CG,A,,GOpen,,B,,,OG,51,Aiden Jian Wang,,Nicolas Miguel Da Silva,,Yellow,13,Feather,A
+0:55/0:00,OG,A,,Time,,N,,,End,51,Aiden Jian Wang,,Nicolas Miguel Da Silva,,Yellow,13,Feather,A
+4:00/3:44,St,N,,GPull,,B,,,OG,52,Aiden Jian Wang,,Drake Au Huynh,,Yellow,13,Feather,A
+3:44/3:19,OG,A,,Scr,,A,,,HG,52,Aiden Jian Wang,,Drake Au Huynh,,Yellow,13,Feather,A
+3:19/3:04,HG,A,,GPass,,A,3,,SC,52,Aiden Jian Wang,,Drake Au Huynh,,Yellow,13,Feather,A
+3:04/1:27,SC,A,,Sub,Armbaar,A,,,End,52,Aiden Jian Wang,,Drake Au Huynh,,Yellow,13,Feather,A
+4:00/3:50,St,N,,GPull,,A,,,OG,53,Aiden Jian Wang,,Cooper Avery Andress,,Yellow,13,Feather,A
+3:50/2:52,OG,B,,Scr,,N,,,CG,53,Aiden Jian Wang,,Cooper Avery Andress,,Yellow,13,Feather,A
+2:52/2:18,CG,A,,GBreak,,A,,1/,St,53,Aiden Jian Wang,,Cooper Avery Andress,,Yellow,13,Feather,A
+2:18/2:12,St,N,,Takedown,DL,A,2,,OG,53,Aiden Jian Wang,,Cooper Avery Andress,,Yellow,13,Feather,A
+2:12/1:56,OG,A,,GPass,,A,3,,SC,53,Aiden Jian Wang,,Cooper Avery Andress,,Yellow,13,Feather,A
+1:56/1:06,SC,A,Back,Reset,,A,2,,St,53,Aiden Jian Wang,,Cooper Avery Andress,,Yellow,13,Feather,A
+1:06/0:56,St,N,,Gpull,,B,,,OG,53,Aiden Jian Wang,,Cooper Avery Andress,,Yellow,13,Feather,A
+0:56/0:18,OG,A,,Scr,,N,,,St,53,Aiden Jian Wang,,Cooper Avery Andress,,Yellow,13,Feather,A
+0:18/0:08,St,N,,Takedown,Throw,A,2,,OG,53,Aiden Jian Wang,,Cooper Avery Andress,,Yellow,13,Feather,A
+0:08/0:00,OG,A,,Time,,N,,,End,53,Aiden Jian Wang,,Cooper Avery Andress,,Yellow,13,Feather,A
+4:00/3:57,St,N,,DGP,,N,,,50-50,54,Aiden Jian Wang,,Connor Liam Stone,,Yellow,13,Feather,A
+3:57/3:32,50-50,N,,Reset,,N,,,St,54,Aiden Jian Wang,,Connor Liam Stone,,Yellow,13,Feather,A
+3:32/3:15,St,N,,Takedown,Pull,A,2,,OG,54,Aiden Jian Wang,,Connor Liam Stone,,Yellow,13,Feather,A
+3:15/2:50,OG,A,,GPass,,A,3,,SC,54,Aiden Jian Wang,,Connor Liam Stone,,Yellow,13,Feather,A
+2:50/0:30,SC,A,Back,Sub,BowA,A,,,End,54,Aiden Jian Wang,,Connor Liam Stone,,Yellow,13,Feather,A
+4:00/3:50,St,N,,Gpull,,A,,,OG,55,Nicolas Miguel Da Silva,,Ronin William Mocock,,Yellow,13,Feather,A
+3:50/2:39,OG,B,,Sweep,,A,2,,OG,55,Nicolas Miguel Da Silva,,Ronin William Mocock,,Yellow,13,Feather,A
+2:39/2:22,OG,A,,GPass,,A,3,,SC,55,Nicolas Miguel Da Silva,,Ronin William Mocock,,Yellow,13,Feather,A
+2:22/2:01,SC,A,,KOBAction,,A,2,,SC,55,Nicolas Miguel Da Silva,,Ronin William Mocock,,Yellow,13,Feather,A
+2:01/1:17,SC,A,KOBSubstate,MTake,,A,4,,FM,55,Nicolas Miguel Da Silva,,Ronin William Mocock,,Yellow,13,Feather,A
+1:17/0:00,FM,A,,Time,,N,,,End,55,Nicolas Miguel Da Silva,,Ronin William Mocock,,Yellow,13,Feather,A
+4:00/3:50,St,N,,Gpull,,B,,,OG,56,Nicolas Miguel Da Silva,,Samuel Sullivan Tarullo,,Yellow,13,Feather,A
+3:50/0:19,OG,A,,GPass,,A,3,,SC,56,Nicolas Miguel Da Silva,,Samuel Sullivan Tarullo,,Yellow,13,Feather,A
+"0:19/0""00",SC,A,,Time,,N,,,End,56,Nicolas Miguel Da Silva,,Samuel Sullivan Tarullo,,Yellow,13,Feather,A
+4:00/3:50,St,N,,Gpull,,A,,,OG,57,Nicolas Miguel Da Silva,,Noah Pinheiro Medici,,Yellow,13,Feather,A
+3:50/2:39,OG,B,,Sweep,,A,2,,OG,57,Nicolas Miguel Da Silva,,Noah Pinheiro Medici,,Yellow,13,Feather,A
+2:39/2:32,OG,A,,GPass,,A,3,,SC,57,Nicolas Miguel Da Silva,,Noah Pinheiro Medici,,Yellow,13,Feather,A
+2:32/2:25,SC,A,,MTake,,A,4,,FM,57,Nicolas Miguel Da Silva,,Noah Pinheiro Medici,,Yellow,13,Feather,A
+2:25/1:50,FM,A,,Sub,,A,,,End,57,Nicolas Miguel Da Silva,,Noah Pinheiro Medici,,Yellow,13,Feather,A
+4:00/3:26,St,N,,Takedown,,A,2,,BM,58,Drake Au Huynh,,Esa Jesus Redzovic,,Yellow,13,Feather,A
+3:26/3:04,BM,A,,Sub,BowA,A,,,End,58,Drake Au Huynh,,Esa Jesus Redzovic,,Yellow,13,Feather,A
+4:00/3:43,St,N,,Takedown,SL,A,2,,SC,59,Drake Au Huynh,,Armando Rafael De Ricardo Sotoma,,Yellow,13,Feather,A
+3:43/2:56,SC,A,,Scr,,B,,,CG,59,Drake Au Huynh,,Armando Rafael De Ricardo Sotoma,,Yellow,13,Feather,A
+2:56/0:00,CG,B,,Time,,N,,,End,59,Drake Au Huynh,,Armando Rafael De Ricardo Sotoma,,Yellow,13,Feather,A
+4:00/3:26,St,N,,Scr,,N,,,HG,60,Cooper Avery Andress,,Francisco Da Cunha Bueno Filho,,Yellow,13,Feather,A
+3:36/2:05,HG,B,,Sweep,,A,2,/1,HG,60,Cooper Avery Andress,,Francisco Da Cunha Bueno Filho,,Yellow,13,Feather,A
+2:05/1:00,HG,A,,BTake,,A,4,,BM,60,Cooper Avery Andress,,Francisco Da Cunha Bueno Filho,,Yellow,13,Feather,A
+1:00/0:00,BM,A,,Time,,N,,,End,60,Cooper Avery Andress,,Francisco Da Cunha Bueno Filho,,Yellow,13,Feather,A
+4:00/3:48,St,N,,GPull,,B,2,,OG,61,Jet Ethan Harrison,,Rafael Santos Da Silva,,Yellow,11,Light,A
+3:48/3:05,OG,B,,Sweep,,A,2,,OG,61,Jet Ethan Harrison,,Rafael Santos Da Silva,,Yellow,11,Light,A
+3:05/2:22,OG,A,,Scr,,N,,1/,OG,61,Jet Ethan Harrison,,Rafael Santos Da Silva,,Yellow,11,Light,A
+2:22/1:26,OG,B,,GClose,,A,,1/,CG,61,Jet Ethan Harrison,,Rafael Santos Da Silva,,Yellow,11,Light,A
+1:26/1:06,CG,B,,Sweep,,A,6,,FM,61,Jet Ethan Harrison,,Rafael Santos Da Silva,,Yellow,11,Light,A
+1:06/0:48,FM,A,,Mount_Escape,,B,,,CG,61,Jet Ethan Harrison,,Rafael Santos Da Silva,,Yellow,11,Light,A
+0:48/0:00,CG,B,,Time,,N,,,End,61,Jet Ethan Harrison,,Rafael Santos Da Silva,,Yellow,11,Light,A
+4:00/3:56,St,N,,GPull,,A,,,OG,62,Jet Ethan Harrison,,Lorenzo D. Oliveira,,Yellow,11,Light,A
+3:56/3:36,OG,B,,Sub,Armbar,A,,,End,62,Jet Ethan Harrison,,Lorenzo D. Oliveira,,Yellow,11,Light,A
+4:00/3:40,St,N,,GPull,,A,,,OG,63,Jet Ethan Harrison,,Joseph Eugenio Eleoterio,,Yellow,11,Light,A
+3:40/2:56,OG,B,,GClose,,A,,,CG,63,Jet Ethan Harrison,,Joseph Eugenio Eleoterio,,Yellow,11,Light,A
+2:56/2:17,CG,B,,Sub,Armbar,A,,,End,63,Jet Ethan Harrison,,Joseph Eugenio Eleoterio,,Yellow,11,Light,A
+4:00/3:47,St,N,,Takedown,DL,A,2,,HG,64,Joseph Eugenio Eleoterio,,Artur Emanuell Neves Silva,,Yellow,11,Light,A
+3:47/3:15,HG,A,,GPass,,A,3,,SC,64,Joseph Eugenio Eleoterio,,Artur Emanuell Neves Silva,,Yellow,11,Light,A
+3:15/2:53,SC,A,,Scr,,B,,,HG,64,Joseph Eugenio Eleoterio,,Artur Emanuell Neves Silva,,Yellow,11,Light,A
+2:53/2:23,HG,A,,GPass,,A,3,,SC,64,Joseph Eugenio Eleoterio,,Artur Emanuell Neves Silva,,Yellow,11,Light,A
+2:23/1:46,SC,A,,BTake,,A,4,,BM,64,Joseph Eugenio Eleoterio,,Artur Emanuell Neves Silva,,Yellow,11,Light,A
+1:46/1:17,BM,A,,Sub,RNC,A,,,End,64,Joseph Eugenio Eleoterio,,Artur Emanuell Neves Silva,,Yellow,11,Light,A
+4:00/3:53,St,N,,Takedown,Off_GPull,A,2,,OG,64,Joseph Eugenio Eleoterio,,Henrique Borges Santos Guima,,Yellow,11,Light,A
+3:53/3:36,OG,A,,Scr,,A,,,HG,64,Joseph Eugenio Eleoterio,,Henrique Borges Santos Guima,,Yellow,11,Light,A
+3:36/2:07,HG,A,,BTake,,A,4,,BM,64,Joseph Eugenio Eleoterio,,Henrique Borges Santos Guima,,Yellow,11,Light,A
+2:07/1:01,BM,A,,Sub,RNC,A,,,End,64,Joseph Eugenio Eleoterio,,Henrique Borges Santos Guima,,Yellow,11,Light,A
